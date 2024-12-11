@@ -4,9 +4,9 @@
 --------------------------------------------------------------*/
 /* Fonts */
 :root {
-  --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --heading-font: "Lato",  sans-serif;
-  --nav-font: "Poppins",  sans-serif;
+  --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --heading-font: "Lato", sans-serif;
+  --nav-font: "Poppins", sans-serif;
 }
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
@@ -136,6 +136,7 @@ h6 {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -184,6 +185,7 @@ h6 {
   .navmenu {
     padding: 0;
   }
+
   .navmenu ul {
     margin: 0;
     padding: 0;
@@ -191,11 +193,13 @@ h6 {
     list-style: none;
     align-items: center;
   }
+
   .navmenu li {
     position: relative;
   }
+
   .navmenu a,
-.navmenu a:focus {
+  .navmenu a:focus {
     color: var(--nav-color);
     padding: 18px 15px;
     font-size: 16px;
@@ -207,21 +211,25 @@ h6 {
     white-space: nowrap;
     transition: 0.3s;
   }
+
   .navmenu a i,
-.navmenu a:focus i {
+  .navmenu a:focus i {
     font-size: 12px;
     line-height: 0;
     margin-left: 5px;
     transition: 0.3s;
   }
+
   .navmenu li:last-child a {
     padding-right: 0;
   }
-  .navmenu li:hover > a,
-.navmenu .active,
-.navmenu .active:focus {
+
+  .navmenu li:hover>a,
+  .navmenu .active,
+  .navmenu .active:focus {
     color: var(--nav-hover-color);
   }
+
   .navmenu .dropdown ul {
     margin: 0;
     padding: 10px 0;
@@ -237,34 +245,41 @@ h6 {
     z-index: 99;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
   }
+
   .navmenu .dropdown ul li {
     min-width: 200px;
   }
+
   .navmenu .dropdown ul a {
     padding: 10px 20px;
     font-size: 15px;
     text-transform: none;
     color: var(--nav-dropdown-color);
   }
+
   .navmenu .dropdown ul a i {
     font-size: 12px;
   }
+
   .navmenu .dropdown ul a:hover,
-.navmenu .dropdown ul .active:hover,
-.navmenu .dropdown ul li:hover > a {
+  .navmenu .dropdown ul .active:hover,
+  .navmenu .dropdown ul li:hover>a {
     color: var(--nav-dropdown-hover-color);
   }
-  .navmenu .dropdown:hover > ul {
+
+  .navmenu .dropdown:hover>ul {
     opacity: 1;
     top: 100%;
     visibility: visible;
   }
+
   .navmenu .dropdown .dropdown ul {
     top: 0;
     left: -90%;
     visibility: hidden;
   }
-  .navmenu .dropdown .dropdown:hover > ul {
+
+  .navmenu .dropdown .dropdown:hover>ul {
     opacity: 1;
     top: 0;
     left: -100%;
@@ -282,10 +297,12 @@ h6 {
     cursor: pointer;
     transition: color 0.3s;
   }
+
   .navmenu {
     padding: 0;
     z-index: 9997;
   }
+
   .navmenu ul {
     display: none;
     list-style: none;
@@ -300,8 +317,9 @@ h6 {
     z-index: 9998;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
   }
+
   .navmenu a,
-.navmenu a:focus {
+  .navmenu a:focus {
     color: var(--nav-dropdown-color);
     padding: 10px 20px;
     font-family: var(--nav-font);
@@ -313,8 +331,9 @@ h6 {
     white-space: nowrap;
     transition: 0.3s;
   }
+
   .navmenu a i,
-.navmenu a:focus i {
+  .navmenu a:focus i {
     font-size: 12px;
     line-height: 0;
     margin-left: 5px;
@@ -327,22 +346,26 @@ h6 {
     transition: 0.3s;
     background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
   }
+
   .navmenu a i:hover,
-.navmenu a:focus i:hover {
+  .navmenu a:focus i:hover {
     background-color: var(--accent-color);
     color: var(--contrast-color);
   }
+
   .navmenu a:hover,
-.navmenu .active,
-.navmenu .active:focus {
+  .navmenu .active,
+  .navmenu .active:focus {
     color: var(--nav-dropdown-hover-color);
   }
+
   .navmenu .active i,
-.navmenu .active:focus i {
+  .navmenu .active:focus i {
     background-color: var(--accent-color);
     color: var(--contrast-color);
     transform: rotate(180deg);
   }
+
   .navmenu .dropdown ul {
     position: static;
     display: none;
@@ -354,16 +377,20 @@ h6 {
     box-shadow: none;
     transition: all .5s ease-in-out;
   }
+
   .navmenu .dropdown ul ul {
     background-color: rgba(33, 37, 41, 0.1);
   }
-  .navmenu .dropdown > .dropdown-active {
+
+  .navmenu .dropdown>.dropdown-active {
     display: block;
     background-color: rgba(33, 37, 41, 0.03);
   }
+
   .mobile-nav-active {
     overflow: hidden;
   }
+
   .mobile-nav-active .mobile-nav-toggle {
     color: #fff;
     position: absolute;
@@ -373,6 +400,7 @@ h6 {
     margin-right: 0;
     z-index: 9999;
   }
+
   .mobile-nav-active .navmenu {
     position: fixed;
     overflow: hidden;
@@ -380,7 +408,8 @@ h6 {
     background: rgba(33, 37, 41, 0.8);
     transition: 0.3s;
   }
-  .mobile-nav-active .navmenu > ul {
+
+  .mobile-nav-active .navmenu>ul {
     display: block;
   }
 }
@@ -475,6 +504,7 @@ h6 {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -555,11 +585,11 @@ h6 {
   font-weight: 600;
 }
 
-.page-title nav ol li + li {
+.page-title nav ol li+li {
   padding-left: 10px;
 }
 
-.page-title nav ol li + li::before {
+.page-title nav ol li+li::before {
   content: "/";
   display: inline-block;
   padding-right: 10px;
@@ -579,8 +609,9 @@ section,
 }
 
 @media (max-width: 1199px) {
+
   section,
-.section {
+  .section {
     scroll-margin-top: 66px;
   }
 }
@@ -675,6 +706,7 @@ section,
   .hero h2 {
     font-size: 32px;
   }
+
   .hero p {
     font-size: 18px;
   }
@@ -932,7 +964,8 @@ section,
   transition: all 0.3s ease-in-out;
 }
 
-.portfolio .portfolio-filters li:hover, .portfolio .portfolio-filters li.filter-active {
+.portfolio .portfolio-filters li:hover,
+.portfolio .portfolio-filters li.filter-active {
   color: var(--accent-color);
 }
 
@@ -1334,14 +1367,14 @@ section,
   color: var(--contrast-color);
 }
 
-.team .team-member .social a + a {
+.team .team-member .social a+a {
   margin-left: 8px;
 }
 
 /*--------------------------------------------------------------
 # Contact Section
 --------------------------------------------------------------*/
-.contact .info-item + .info-item {
+.contact .info-item+.info-item {
   margin-top: 40px;
 }
 
@@ -1456,7 +1489,7 @@ section,
   font-size: 15px;
 }
 
-.portfolio-details .portfolio-info ul li + li {
+.portfolio-details .portfolio-info ul li+li {
   margin-top: 10px;
 }
 
@@ -1544,6 +1577,10 @@ section,
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/
-/* .starter-section {
-  /* Add your styles here
-} */
+
+/* Exemple de style dans styles/globals.css */
+iframe {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}

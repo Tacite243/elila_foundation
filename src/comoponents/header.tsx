@@ -1,23 +1,23 @@
-'use client'
+'use client';
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from 'next/navigation';
 import '@/app/globals.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-
 const Header: React.FC = () => {
     const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+    const pathname = usePathname(); // Récupérer la route actuelle
 
     const toggleMobileNav = () => {
         setIsMobileNavOpen(!isMobileNavOpen);
     };
 
     const menuItems = [
-        { href: "#hero", label: "Acceuil", active: true },
+        { href: "#hero", label: "Acceuil" },
         { href: "#about", label: "A propos" },
         { href: "#cards", label: "Nos formations" },
         { href: "#projects", label: "Nos projets" },
@@ -25,29 +25,41 @@ const Header: React.FC = () => {
         {
             label: "Actualités",
             dropdown: [
-                { href: "#", label: "Dropdown 1" },
+                { href: "#dropdown1", label: "Dropdown 1" },
                 {
                     label: "Deep Dropdown",
                     dropdown: [
-                        { href: "#", label: "Deep Dropdown 1" },
-                        { href: "#", label: "Deep Dropdown 2" },
-                        { href: "#", label: "Deep Dropdown 3" },
-                        { href: "#", label: "Deep Dropdown 4" },
-                        { href: "#", label: "Deep Dropdown 5" },
+                        { href: "#deep-dropdown1", label: "Deep Dropdown 1" },
+                        { href: "#deep-dropdown2", label: "Deep Dropdown 2" },
                     ]
                 },
-                { href: "#", label: "Dropdown 2" },
-                { href: "#", label: "Dropdown 3" },
-                { href: "#", label: "Dropdown 4" },
+                { href: "#dropdown2", label: "Dropdown 2" },
             ]
         },
         { href: "#contact", label: "Nous contacter" },
     ];
 
-    const renderMenu = (items: { href?: string; label: string; active?: boolean; dropdown?: { href?: string; label: string; dropdown?: { href?: string; label: string; }[] }[] }[]) =>
+    // Fonction pour générer les liens avec gestion des ancres sur la page d'accueil
+    const generateHref = (href: string) => {
+        if (pathname === "/" && href.startsWith("#")) {
+            return href; // Si sur la page d'accueil, utiliser uniquement l'ancre
+        }
+        return `/${href}`; // Sinon, préfixer avec "/"
+    };
+
+    const renderMenu = (
+        items: {
+            href?: string;
+            label: string;
+            dropdown?: { href?: string; label: string; dropdown?: { href?: string; label: string; }[] }[];
+        }[]
+    ) =>
         items.map((item, index) => (
             <li key={index} className={item.dropdown ? "dropdown" : ""}>
-                <Link href={item.href || "#"} className={item.active ? "active" : ""}>
+                <Link
+                    href={generateHref(item.href || "#")}
+                    scroll={pathname === "/" || !item.href?.startsWith("#")} // Permettre le défilement uniquement sur les ancres internes
+                >
                     <span>{item.label}</span>
                     {item.dropdown && <i className="bi bi-chevron-down toggle-dropdown"></i>}
                 </Link>
