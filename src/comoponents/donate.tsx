@@ -19,7 +19,7 @@ const DonationSection = () => {
     description:
       'Croyiez-vous en nous et en notre potentienls ? soutenez notre fondation en faisant un don simplement',
     buttonText: 'Faire un don',
-    buttonLink: '#',
+    buttonLink: '#contact',
     backgroundImage: '/PXL_20230520_141244801.jpg',
   };
 

@@ -54,7 +54,7 @@ const Footer = () => {
 
       {/* Copyright Section */}
       <div className="container copyright text-center mt-4">
-        <p>© <span>Copyright</span> <strong className="px-1 sitename">Elila foundation</strong> <span>All Rights Reserved</span></p>
+        <p>© <span>Copyright</span> <strong className="px-1 sitename"><button>Elila foundation</button></strong> <span>All Rights Reserved</span></p>
         <div className="credits">
           Designed by Professor
         </div>

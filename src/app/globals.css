@@ -641,8 +641,10 @@ section,
 .hero {
   width: 100%;
   min-height: 70vh;
+  /* Ajustez selon la hauteur de votre image */
   position: relative;
   padding: 80px 0;
+  /* Garder le padding original */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -702,6 +704,48 @@ section,
   border-color: var(--accent-color);
 }
 
+/* Vagues du Hero Section */
+.hero-waves {
+  position: absolute;
+  bottom: 0;
+  /* Fixé au bas de l'image */
+  left: 0;
+  width: 200%;
+  /* Étendre les vagues pour éviter les limites visibles */
+  height: 80px;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.hero-waves .wave1 use {
+  animation: wave-animation 6s infinite linear;
+  fill: rgba(255, 255, 255, 0.5);
+}
+
+.hero-waves .wave2 use {
+  animation: wave-animation 6s infinite linear;
+  animation-delay: 2s;
+  fill: rgba(255, 255, 255, 0.3);
+}
+
+.hero-waves .wave3 use {
+  animation: wave-animation 6s infinite linear;
+  animation-delay: 4s;
+  fill: rgba(255, 255, 255, 0.2);
+}
+
+/* Animation des vagues */
+@keyframes wave-animation {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-200px);
+    /* Correspond à la largeur étendue */
+  }
+}
+
 @media (max-width: 768px) {
   .hero h2 {
     font-size: 32px;
@@ -711,6 +755,7 @@ section,
     font-size: 18px;
   }
 }
+
 
 /*--------------------------------------------------------------
 # About Section

@@ -9,12 +9,17 @@ const Loader = () => {
     const pathname = usePathname();
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false); // Désactive le loader après un délai
-        }, 500);
-
-        return () => clearTimeout(timer); // Nettoie le timer
-    }, [pathname]); // Exécuté à chaque changement de route
+        if (pathname === '/admin') {
+            // Si la route est /admin, activez le loader
+            setLoading(true);
+            const timer = setTimeout(() => setLoading(false), 500); // Temps du loader
+            return () => clearTimeout(timer);
+        } else if (loading) {
+            // Si l'application est actualisée (state initial "true")
+            const timer = setTimeout(() => setLoading(false), 500);
+            return () => clearTimeout(timer);
+        }
+    }, [pathname]);
 
     return loading ? <div id="preloader"></div> : null; // Affiche le loader uniquement si "loading" est vrai
 };

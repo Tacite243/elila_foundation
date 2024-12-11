@@ -13,55 +13,55 @@ const ProgrammeSection = () => {
     });
   }, []);
 
-  const servicesData = [
+  const programData = [
     {
       id: 1,
       icon: 'bi-briefcase',
-      title: 'Lorem Ipsum',
-      description: 'Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi',
-      link: 'service-details.html',
+      title: 'Activités culturelles',
+      description: 'Nous mettons en avant les talents de notre jeunesse à travers différentes activités culturelles',
+      link: '/',
       delay: 100,
     },
     {
       id: 2,
       icon: 'bi-card-checklist',
-      title: 'Dolor Sitema',
-      description: 'Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip exa',
-      link: 'service-details.html',
+      title: 'Activités scientifiques',
+      description: "A travers ce programme nous facilitons à nos jeunes l&#39;accès à la crème scientifique de notre communauté et d'ailleurs",
+      link: '#',
       delay: 200,
     },
     {
       id: 3,
       icon: 'bi-bar-chart',
-      title: 'Sed ut perspiciatis',
-      description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum',
-      link: 'service-details.html',
+      title: 'Partage d&#39;opportunités',
+      description: 'Nous sommes une structure de facilitation à l&#39;accès à des opportunités économique, professionnel, politique ...',
+      link: '#',
       delay: 300,
     },
     {
       id: 4,
       icon: 'bi-binoculars',
-      title: 'Magni Dolores',
-      description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt',
-      link: 'service-details.html',
+      title: 'Le social',
+      description: "Dans le volet social, nous volons au secours des membres de la communauté en détresse",
+      link: '#',
       delay: 400,
     },
     {
       id: 5,
       icon: 'bi-brightness-high',
-      title: 'Nemo Enim',
-      description: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praese',
-      link: 'service-details.html',
+      title: "Partage d'epériences",
+      description: "A travers différentes programmes, nous promouvons le partage d'expérience",
+      link: '#',
       delay: 500,
     },
-    {
-      id: 6,
-      icon: 'bi-calendar4-week',
-      title: 'Eiusmod Tempor',
-      description: 'Et harum quidem rerum facilis est et expedita distinctio dasa fermo lind saca',
-      link: 'service-details.html',
-      delay: 600,
-    },
+    // {
+    //   id: 6,
+    //   icon: 'bi-calendar4-week',
+    //   title: 'Eiusmod Tempor',
+    //   description: 'Et harum quidem rerum facilis est et expedita distinctio dasa fermo lind saca',
+    //   link: 'service-details.html',
+    //   delay: 600,
+    // },
   ];
 
   return (
@@ -69,13 +69,13 @@ const ProgrammeSection = () => {
       {/* Section Title */}
       <div className="container section-title" data-aos="fade-up">
         <h2>Nos Programmes</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <p>Elila foundation est une structure très dynamique avec une large gamme de programme qu&#39;il met à la portée de la communauté</p>
       </div>
 
       {/* Programmes List */}
       <div className="container">
         <div className="row gy-4">
-          {servicesData.map(({ id, icon, title, description, link, delay }) => (
+          {programData.map(({ id, icon, title, description, link, delay }) => (
             <div
               key={id}
               className="col-xl-4 col-lg-6"

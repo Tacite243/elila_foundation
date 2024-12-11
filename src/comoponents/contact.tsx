@@ -61,7 +61,7 @@ const Contact = () => {
             {/* Section Title */}
             <div className="container section-title" data-aos="fade-up">
                 <h2>Contact</h2>
-                <p>Petit message captivant pour insiter les utilisateurs à nous écrire</p>
+                <p>Laissez un message pour plus d&apos;information ou bien pour nous signaler votre don</p>
             </div>
 
             <div className="container" data-aos="fade-up" data-aos-delay="100">
