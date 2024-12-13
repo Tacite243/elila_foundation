@@ -19,23 +19,10 @@ const Header: React.FC = () => {
     const menuItems = [
         { href: "#hero", label: "Acceuil" },
         { href: "#about", label: "A propos" },
-        { href: "#cards", label: "Nos formations" },
-        { href: "#projects", label: "Nos projets" },
+        { href: "#call-to-action", label: "Nous soutenir" },
+        { href: "#services", label: "Programmes" },
+        { href: "#cards", label: "Culture" },
         { href: "#team", label: "Team" },
-        {
-            label: "Actualités",
-            dropdown: [
-                { href: "#dropdown1", label: "Dropdown 1" },
-                {
-                    label: "Deep Dropdown",
-                    dropdown: [
-                        { href: "#deep-dropdown1", label: "Deep Dropdown 1" },
-                        { href: "#deep-dropdown2", label: "Deep Dropdown 2" },
-                    ]
-                },
-                { href: "#dropdown2", label: "Dropdown 2" },
-            ]
-        },
         { href: "#contact", label: "Nous contacter" },
     ];
 

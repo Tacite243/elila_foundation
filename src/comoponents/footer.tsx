@@ -1,6 +1,9 @@
-import React from 'react';
+"use client"
+import React, { useState } from 'react';
+import LoginPopup from './loginPopup';
 
 const Footer = () => {
+  const [showLogin, setShowLogin] = useState(false)
   return (
     <footer id="footer" className="footer dark-background">
       <div className="container">
@@ -54,7 +57,8 @@ const Footer = () => {
 
       {/* Copyright Section */}
       <div className="container copyright text-center mt-4">
-        <p>© <span>Copyright</span> <strong className="px-1 sitename"><button>Elila foundation</button></strong> <span>All Rights Reserved</span></p>
+        <p>© <span>Copyright</span> <strong className="px-1 sitename"><button onClick={() => setShowLogin(true)}>Elila foundation</button></strong> <span>All Rights Reserved</span></p>
+        {showLogin && <LoginPopup onClose={() => setShowLogin(false)} />}
         <div className="credits">
           Designed by Professor
         </div>

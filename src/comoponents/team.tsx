@@ -7,14 +7,14 @@ import AOS from 'aos';
 
 
 const Team = () => {
-  
+
   const teamMembers = [
     {
       id: 1,
-      name: 'Walter White',
-      position: 'Chief Executive Officer',
-      description: 'Explicabo voluptatem mollitia et repellat qui dolorum quasi',
-      image: '/img/team/team-1.jpg',
+      name: 'Lucien Azmayawa',
+      position: 'Chargé du développement Jeunesse Luusu Mwenga',
+      description: "Entrepreneur, coach d'entreprise expérimenté, spécialiste dans le développement commercial et le leardship",
+      image: '/Lucien.jpg',
       socialLinks: {
         twitter: '#',
         facebook: '#',
@@ -24,10 +24,10 @@ const Team = () => {
     },
     {
       id: 2,
-      name: 'Sarah Jhonson',
-      position: 'Product Manager',
-      description: 'Aut maiores voluptates amet et quis praesentium qui senda para',
-      image: '/img/team/team-2.jpg',
+      name: 'Trésor ILUNGA',
+      position: 'Président Jeunesse Luusu Lega Goma',
+      description: "Chef de travaux, et chercheur en économie",
+      image: '/tresor.jpg',
       socialLinks: {
         twitter: '#',
         facebook: '#',
@@ -37,10 +37,10 @@ const Team = () => {
     },
     {
       id: 3,
-      name: 'William Anderson',
-      position: 'CTO',
-      description: 'Quisquam facilis cum velit laborum corrupti fuga rerum quia',
-      image: '/img/team/team-3.jpg',
+      name: 'TOMBO GARY Amani',
+      position: 'Chargé de la culture et du social',
+      description: 'PDG Appui print service',
+      image: '/gary.jpg',
       socialLinks: {
         twitter: '#',
         facebook: '#',
@@ -62,7 +62,7 @@ const Team = () => {
       }
     }
   ];
-  
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       AOS.init();

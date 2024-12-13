@@ -159,7 +159,7 @@ h6 {
   background-color: var(--background-color);
   padding: 15px 0;
   transition: all 0.5s;
-  z-index: 997;
+  z-index: 2000;
 }
 
 .header .logo {
@@ -319,7 +319,7 @@ h6 {
     border-radius: 6px;
     background-color: var(--nav-mobile-background-color);
     overflow-y: auto;
-    transition: 0.3s;
+    transition: 0.3s ease-in-out;
     z-index: 9998;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
   }
@@ -412,11 +412,12 @@ h6 {
     overflow: hidden;
     inset: 0;
     background: rgba(33, 37, 41, 0.8);
-    transition: 0.3s;
+    transition: 0.3s ease-in-out;
   }
 
   .mobile-nav-active .navmenu>ul {
     display: block;
+    opacity: 1; /* Menu visible quand actif */
   }
 }
 
@@ -646,8 +647,7 @@ section,
 --------------------------------------------------------------*/
 .hero {
   width: 100%;
-  min-height: 70vh;
-  /* Ajustez selon la hauteur de votre image */
+  min-height: 80vh;
   position: relative;
   padding: 80px 0;
   /* Garder le padding original */
@@ -672,6 +672,7 @@ section,
   position: absolute;
   inset: 0;
   z-index: 2;
+  pointer-events: none;
 }
 
 .hero .container {
@@ -785,7 +786,7 @@ section,
   display: flex;
 }
 
-.about .content ul i {
+ .content ul i {
   color: var(--accent-color);
   margin-right: 0.5rem;
   line-height: 1.2;
@@ -1634,4 +1635,13 @@ iframe {
   max-width: 100%;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.container.copyright button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+  cursor: pointer;
 }
