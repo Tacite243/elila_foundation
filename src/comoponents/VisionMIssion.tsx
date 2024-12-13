@@ -31,8 +31,8 @@ const VisionMission = () => {
                             <div>
                                 <h3 style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#007BFF' }}>Notre Vision</h3>
                                 <p style={{ fontSize: '1rem', color: '#555', lineHeight: '1.6' }}>
-                                    Bulega Foundation aspire à devenir une force motrice pour l'émergence et l'influence de la communauté Léga,
-                                    promouvant l'unité, le développement et l'excellence dans tous les domaines.
+                                    Bulega Foundation aspire à devenir une force motrice pour l&#39;émergence et l&#39;influence de la communauté Léga,
+                                    promouvant l&#39;unité, le développement et l&#39;excellence dans tous les domaines.
                                 </p>
                             </div>
                         </div>

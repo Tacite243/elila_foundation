@@ -19,6 +19,7 @@ const LoginPopup = ({ onClose }: { onClose: () => void }) => {
       
     } catch (error) {
       alert('Login failed');
+      console.log(error);      
     }
   };
 
