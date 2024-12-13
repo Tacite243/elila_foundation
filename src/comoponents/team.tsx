@@ -50,10 +50,10 @@ const Team = () => {
     },
     {
       id: 4,
-      name: 'Amanda Jepson',
-      position: 'Accountant',
-      description: 'Dolorum tempora officiis odit laborum officiis et et accusamus',
-      image: '/img/team/team-4.jpg',
+      name: 'Tombo USHINDI',
+      position: 'Chargé de communication',
+      description: "Humanitaire et Master en communication",
+      image: '/ushindi.jpg',
       socialLinks: {
         twitter: '#',
         facebook: '#',
