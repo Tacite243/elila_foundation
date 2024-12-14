@@ -1,3 +1,48 @@
 {
-    
-}
+    "articles": {
+      "education": {
+        "title": "L’Initiation (Lutende) chez le Peuple Lega",
+        "underTitle": "Un Rite de Passage Sacré",
+        "description": "Le Lutende n’est pas simplement un événement, mais un processus sacré et éducatif. Il symbolise l’intégration de l’individu dans la société adulte, avec ses droits et ses devoirs. Ce rite vise à former des citoyens respectueux des traditions, prêts à assumer leur rôle au sein de la communauté.",
+        "content": {
+          "section": "Les Étapes du Lutende...",
+          "section1": "La Cérémonie..."
+        },
+        "imgSource": "/images (5).jpeg"
+      },
+      "spiritualite": {
+        "title": "La Spiritualité chez le Peuple Lega",
+        "underTitle": "Les Racines du Sacré",
+        "description": "Découvrez la spiritualité ancestrale des Léga, où la nature et le divin se rencontrent.",
+        "content": {
+          "section": "Introduction à la spiritualité...",
+          "section1": "Les pratiques rituelles..."
+        },
+        "imgSource": "/images/spiritualite.jpeg"
+      }
+    },
+    "cards": [
+      {
+        "id": 1,
+        "title": "Mariage",
+        "description": "Découvrez ici les valeurs coutumières du mariage dans notre communauté",
+        "link": "/articles/mariage",
+        "delay": 100
+      },
+      {
+        "id": 2,
+        "title": "Education (initiation)",
+        "description": "Découvrez ce qu'est vraiment l'initiation chez nous, le Lutende",
+        "link": "/articles/education",
+        "delay": 200
+      },
+      {
+        "id": 3,
+        "title": "Spiritualité",
+        "description": "Chaque peuple a sa propre spiritualité, découvrez celle de nos ancêtres",
+        "link": "/articles/spiritualite",
+        "delay": 300
+      }
+    ]
+  }
+  

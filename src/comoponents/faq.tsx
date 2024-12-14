@@ -4,14 +4,19 @@ import React, { useState, useEffect } from 'react';
 import AOS from 'aos';
 
 const FAQ = () => {
+    const [showMore, setShowMore] = useState(false);
     const faqItems = [
-        { id: 1, question: "A quoi sert réellement ce site web ?", answer: "Le site permet de promouvoir la culture LEGA Le site permet d'informer sur actualités du BULEGA. Vendre l'image du BULEGA dans sa biodiversité (Faune et Flore) envie de stimuler le tourisme" },
-        { id: 2, question: "Qui sont les bénéficiaires de ce site ?", answer: 'Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.' },
-        { id: 3, question: "comment soutenir cette initiative ?", answer: 'Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis.' },
-        // { id: 4, question: 'Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla?', answer: 'Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.' },
-        // { id: 5, question: 'Tempus quam pellentesque nec nam aliquam sem et tortor consequat?', answer: 'Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in.' }
+        { id: 1, question: "Qu’est-ce que la Elila Foundation ?", answer: "La Elila Foundation est une organisation dédiée au développement socioéconomique, culturel, et politique de l’espace Lega, couvrant les territoires de Mwenga, Shabunda, Pangi et Walikale, ainsi que la diaspora Lega à travers le monde." },
+        { id: 2, question: "Quelle est la mission de la Fondation ?", answer: "La mission de la Elila Foundation est de promouvoir l’émergence du peuple Lega en valorisant ses richesses culturelles, en stimulant le développement économique, et en renforçant son rôle dans les débats scientifiques, sociaux et politiques." },
+        { id: 3, question: "Quels sont les objectifs principaux de la Fondation ?", answer: "Protéger et promouvoir la culture Lega, notamment à travers le système du Bwami et d’autres traditions. Mobiliser les ressources humaines et financières pour soutenir des projets de développement dans les 4 territoires. Encourager la diaspora Lega à participer activement au progrès de leur communauté d’origine. Défendre les intérêts de l’espace Lega auprès des instances politiques et économiques." },
+        { id: 4, question: "Quelles sont les richesses des territoires de Mwenga, Shabunda, Pangi et Walikale ?", answer: "Richesses culturelles : Le Bwami, les chants, danses, et savoir-faire artisanaux. Ressources naturelles : L’or, le coltan, le bois et les terres fertiles. Potentiel touristique : Parcs naturels, sites culturels et paysages spectaculaires. Opportunités économiques : Agriculture, exploitation durable des minerais, tourisme, et énergie." },
+        { id: 5, question: "Quels sont les secteurs porteurs pour les investissements ?", answer: "Les secteurs clés incluent l’agriculture, les énergies renouvelables, les infrastructures, le tourisme, et la transformation des produits locaux." },
+        { id: 6, question: "Comment la diaspora Lega peut-elle contribuer au développement des territoires ?", answer: "En investissant dans des projets structurants. En partageant des compétences et des innovations technologiques. En soutenant les initiatives politiques et économiques locales." },
+        { id: 7, question: "Quels sont les projets phares de la Elila Foundation ?", answer: "Soutien aux projets éducatifs et culturels. Promotion d’une exploitation minière durable et responsable. Développement de programmes touristiques. Mobilisation des jeunes pour des initiatives entrepreneuriales." },
+        { id: 8, question: "Comment participer aux activités de la Fondation ?", answer: "Vous pouvez participer en : Devenant membre ou bénévole. Finançant ou soutenant un projet spécifique. Partageant vos compétences ou connaissances." },
+        { id: 9, question: "Comment contacter la Elila Foundation ?", answer: " Vous pouvez nous contacter via : Email : contact@elilafoundation.org, Téléphone : +243 990 868 155" },
+        { id: 10, question: "Quels sont les engagements de la Fondation envers les élus locaux et la politique ?", answer: "La Elila Foundation travaille en collaboration avec les élus locaux pour : Promouvoir une gouvernance transparente. Renforcer les infrastructures et les services publics. Mobiliser des ressources pour le développement des territoires." }
     ];
-
     const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
     const toggleFAQ = (id: number) => {
@@ -20,6 +25,10 @@ const FAQ = () => {
         } else {
             setOpenFAQ(id);
         }
+    };
+
+    const handleShowMore = () => {
+        setShowMore(!showMore);
     };
 
     useEffect(() => {
@@ -34,16 +43,14 @@ const FAQ = () => {
                 <div className="row gy-4">
                     <div className="col-lg-4" data-aos="fade-up" data-aos-delay="100">
                         <div className="content px-xl-5">
-                            <h3><strong>Questions</strong><br /><span>Fréquemment posées</span></h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
-                            </p>
+                            <h3><strong style={{color: "#ff0000"}}>Questions</strong><br /><span>Fréquemment posées</span></h3>
+                            <p>Cette FAQ reflète notre vision et nos actions pour contribuer à un avenir prospère et durable pour l’espace Lega.</p>
                         </div>
                     </div>
 
                     <div className="col-lg-8" data-aos="fade-up" data-aos-delay="200">
                         <div className="faq-container">
-                            {faqItems.map(item => (
+                            {faqItems.slice(0, 4).map(item => (
                                 <div key={item.id} className={`faq-item ${openFAQ === item.id ? 'faq-active' : ''}`}>
                                     <h3 onClick={() => toggleFAQ(item.id)}>
                                         <span className="num">{item.id}.</span> <span>{item.question}</span>
@@ -56,6 +63,25 @@ const FAQ = () => {
                                     <i className="faq-toggle bi bi-chevron-right"></i>
                                 </div>
                             ))}
+                            {showMore && faqItems.slice(4).map(item => (
+                                <div key={item.id} className={`faq-item ${openFAQ === item.id ? 'faq-active' : ''}`}>
+                                    <h3 onClick={() => toggleFAQ(item.id)}>
+                                        <span className="num">{item.id}.</span> <span>{item.question}</span>
+                                    </h3>
+                                    {openFAQ === item.id && (
+                                        <div className="faq-content">
+                                            <p>{item.answer}</p>
+                                        </div>
+                                    )}
+                                    <i className="faq-toggle bi bi-chevron-right"></i>
+                                </div>
+                            ))}
+                            <button
+                                className='showmore'
+                                onClick={handleShowMore}
+                            >
+                                {showMore ? ' moins...' : 'voir plus...'}
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -15,9 +15,9 @@ const DonationSection = () => {
   }, []);
 
   const ctaData = {
-    title: 'Croyiez en nous',
+    title: 'Croyez en nous',
     description:
-      'Croyiez-vous en nous et en notre potentienls ? soutenez notre fondation en faisant un don simplement',
+      'Croyez-vous en nous et en notre potentienl ? soutenez notre fondation en faisant un don simplement',
     buttonText: 'Faire un don',
     buttonLink: '#contact',
     backgroundImage: '/PXL_20230520_141244801.jpg',
@@ -34,7 +34,7 @@ const DonationSection = () => {
               <h3>{ctaData.title}</h3>
               <p>{ctaData.description}</p>
               <a className="cta-btn" href={ctaData.buttonLink}>
-                {ctaData.buttonText}
+                <strong>{ctaData.buttonText}</strong>
               </a>
             </div>
           </div>

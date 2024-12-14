@@ -60,7 +60,12 @@ const Contact = () => {
         <section id="contact" className="contact section">
             {/* Section Title */}
             <div className="container section-title" data-aos="fade-up">
-                <h2>Contact</h2>
+                <h2 className="title-with-underline">
+                    Contact
+                    <span className="underline">
+                        <span></span>
+                    </span>
+                </h2>
                 <p>Laissez un message pour plus d&apos;information ou bien pour nous signaler votre don</p>
             </div>
 
@@ -72,7 +77,7 @@ const Contact = () => {
                             <i className="bi bi-geo-alt flex-shrink-0"></i>
                             <div>
                                 <h3>Adresse</h3>
-                                <p>A108 Katoy, 23</p>
+                                <p>Rue Mutinga-Afia bora, en face de l&apos;hopital la famille</p>
                             </div>
                         </div>
 
@@ -88,7 +93,7 @@ const Contact = () => {
                             <i className="bi bi-envelope flex-shrink-0"></i>
                             <div>
                                 <h3>Ou bien laissez un mail</h3>
-                                <p>lucienazma@gmail.com</p>
+                                <p>contact@elilafoundation.org</p>
                             </div>
                         </div>
                     </div>
@@ -136,7 +141,7 @@ const Contact = () => {
                                     {status.loading && <div className="loading">Loading...</div>}
                                     {status.errorMessage && <div className="error-message">{status.errorMessage}</div>}
                                     {status.successMessage && <div className="sent-message">{status.successMessage}</div>}
-                                    <button type="submit">Envoyer</button>
+                                    <button type="submit"><strong>Envoyer</strong></button>
                                 </div>
                             </div>
                         </form>

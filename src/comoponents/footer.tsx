@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import LoginPopup from './loginPopup';
 
+
+
 const Footer = () => {
   const [showLogin, setShowLogin] = useState(false)
   return (
@@ -14,7 +16,7 @@ const Footer = () => {
             <div className="address">
               <h4>Adresse</h4>
               <p>Goma</p>
-              <p>A108 Katoy, 23</p>
+              <p>Rue Mutinga-Afia bora, en face de l&#39;hopital la famille</p>
             </div>
           </div>
 
@@ -24,8 +26,8 @@ const Footer = () => {
             <div>
               <h4>Contact</h4>
               <p>
-                <strong>Téléphone:</strong><span> +243 990 868 155</span><br />
-                <strong>Email:</strong><span> lucienazma@gmail.com</span>
+                <strong>Téléphone: </strong><span>+243 990 868 155</span><br />
+                <strong>Email:</strong><span> contact@elilafoundation.org</span>
               </p>
             </div>
           </div>

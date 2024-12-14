@@ -52,7 +52,7 @@ const HeroSection = () => {
           <div className="col-lg-8">
             <h2>Elila foundation</h2>
             <p>Espace où les legas de la diaspora et du pays se rencontrent</p>
-            <Link href="/identification" className="btn-get-started">Identifier vous ici</Link>
+            <Link href="/identification" className="btn-get-started"><strong>Identifier vous ici</strong></Link>
           </div>
         </div>
       </div>

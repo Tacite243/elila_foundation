@@ -26,15 +26,15 @@ const ProgrammeSection = () => {
       id: 2,
       icon: 'bi-card-checklist',
       title: 'Activités scientifiques',
-      description: "A travers ce programme nous facilitons à nos jeunes l&#39;accès à la crème scientifique de notre communauté et d'ailleurs",
+      description: "A travers ce programme nous facilitons à nos jeunes l'accès à la crème scientifique de notre communauté et d'ailleurs",
       link: '#',
       delay: 200,
     },
     {
       id: 3,
       icon: 'bi-bar-chart',
-      title: 'Partage d&#39;opportunités',
-      description: 'Nous sommes une structure de facilitation à l&#39;accès à des opportunités économique, professionnel, politique ...',
+      title: "Partage d'opportunités",
+      description: "Nous sommes une structure de facilitation à l'accès à des opportunités économique, professionnel, politique ...",
       link: '#',
       delay: 300,
     },
@@ -49,8 +49,8 @@ const ProgrammeSection = () => {
     {
       id: 5,
       icon: 'bi-brightness-high',
-      title: "Partage d'epériences",
-      description: "A travers différentes programmes, nous promouvons le partage d'expérience",
+      title: "Partage d'expériences",
+      description: "A travers différentes programmes, nous promouvons le partage d'expériences",
       link: '#',
       delay: 500,
     },
@@ -68,7 +68,12 @@ const ProgrammeSection = () => {
     <section id="services" className="services section">
       {/* Section Title */}
       <div className="container section-title" data-aos="fade-up">
-        <h2>Nos Programmes</h2>
+        <h2 className="title-with-underline">
+          Nos Programmes
+          <span className="underline">
+            <span></span>
+          </span>
+        </h2>
         <p>Elila foundation est une structure très dynamique avec une large gamme de programme qu&#39;il met à la portée de la communauté</p>
       </div>
 

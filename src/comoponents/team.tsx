@@ -73,7 +73,12 @@ const Team = () => {
     <section id="team" className="team section">
       {/* Section Title */}
       <div className="container section-title" data-aos="fade-up">
-        <h2>Team</h2>
+        <h2 className="title-with-underline">
+          Team
+          <span className="underline">
+            <span></span>
+          </span>
+        </h2>
         <p>Une équipe forte derrière cette grande structure</p>
       </div>
 
