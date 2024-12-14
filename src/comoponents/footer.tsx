@@ -24,8 +24,8 @@ const Footer = () => {
             <div>
               <h4>Contact</h4>
               <p>
-                <strong>Téléphone:</strong><span> +123 456 7890</span><br />
-                <strong>Email:</strong><span> info@example.com</span>
+                <strong>Téléphone:</strong><span> +243 990 868 155</span><br />
+                <strong>Email:</strong><span> lucienazma@gmail.com</span>
               </p>
             </div>
           </div>

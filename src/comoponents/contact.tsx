@@ -80,7 +80,7 @@ const Contact = () => {
                             <i className="bi bi-telephone flex-shrink-0"></i>
                             <div>
                                 <h3>Appellez-nous au</h3>
-                                <p>+123 456 7890</p>
+                                <p>+243 990 868 155</p>
                             </div>
                         </div>
 
@@ -88,7 +88,7 @@ const Contact = () => {
                             <i className="bi bi-envelope flex-shrink-0"></i>
                             <div>
                                 <h3>Ou bien laissez un mail</h3>
-                                <p>info@example.com</p>
+                                <p>lucienazma@gmail.com</p>
                             </div>
                         </div>
                     </div>
