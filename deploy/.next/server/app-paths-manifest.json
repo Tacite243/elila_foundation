@@ -1,0 +1,13 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/articles/education/page": "app/articles/education/page.js",
+  "/articles/notabilite/page": "app/articles/notabilite/page.js",
+  "/articles/spiritualite/page": "app/articles/spiritualite/page.js",
+  "/articles/mariage/page": "app/articles/mariage/page.js",
+  "/articles/territoire/page": "app/articles/territoire/page.js",
+  "/page": "app/page.js",
+  "/identification/page": "app/identification/page.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js",
+  "/admin/page": "app/admin/page.js"
+}

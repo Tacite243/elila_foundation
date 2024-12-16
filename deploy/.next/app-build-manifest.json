@@ -1,0 +1,104 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/chunks/app/_not-found/page-468e2fae09f25fb9.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/css/aa2c73bdefbb8864.css",
+      "static/css/cc6560bb27fdb87e.css",
+      "static/css/8419bf7e20c871f2.css",
+      "static/css/d3df112486f97f47.css",
+      "static/chunks/173-4cec1f2ddb7b6628.js",
+      "static/chunks/236-f300d78a39c5966d.js",
+      "static/chunks/app/layout-c7ebf19582d8abe3.js"
+    ],
+    "/articles/education/page": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/chunks/589-62d39c424099327d.js",
+      "static/chunks/app/articles/education/page-02a200214dc4b1aa.js"
+    ],
+    "/articles/notabilite/page": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/chunks/589-62d39c424099327d.js",
+      "static/chunks/app/articles/notabilite/page-892e2f81cd605f40.js"
+    ],
+    "/articles/spiritualite/page": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/chunks/589-62d39c424099327d.js",
+      "static/chunks/app/articles/spiritualite/page-5d083f1bbe2a71a8.js"
+    ],
+    "/articles/mariage/page": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/chunks/589-62d39c424099327d.js",
+      "static/chunks/app/articles/mariage/page-8039060acbb38ef3.js"
+    ],
+    "/articles/territoire/page": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/chunks/589-62d39c424099327d.js",
+      "static/chunks/app/articles/territoire/page-351777fa2ed7f8f4.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/css/cc6560bb27fdb87e.css",
+      "static/css/69f81e06845cd7ae.css",
+      "static/chunks/589-62d39c424099327d.js",
+      "static/chunks/173-4cec1f2ddb7b6628.js",
+      "static/chunks/app/page-69b0630412e90bea.js"
+    ],
+    "/identification/page": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/css/cc6560bb27fdb87e.css",
+      "static/chunks/app/identification/page-78bfce8eb10a262b.js"
+    ],
+    "/admin/layout": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/chunks/app/admin/layout-7f6d2e25418d338a.js"
+    ],
+    "/admin/dashboard/page": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/chunks/app/admin/dashboard/page-3b45372f47ad5679.js"
+    ],
+    "/admin/page": [
+      "static/chunks/webpack-47c8a477c0e56b50.js",
+      "static/chunks/4bd1b696-b74965b2aed0f966.js",
+      "static/chunks/517-746cbf6011e51ebb.js",
+      "static/chunks/main-app-8d6f2eadc4774348.js",
+      "static/chunks/app/admin/page-a6f6f7dd798de940.js"
+    ]
+  }
+}

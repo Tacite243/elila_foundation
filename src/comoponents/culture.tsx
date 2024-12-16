@@ -37,27 +37,27 @@ const OurCultureSection = () => {
       link: '/articles/spiritualite',
       delay: 300,
     },
-    // {
-    //   id: 4,
-    //   title: "Histoire",
-    //   description: "D'où viennent nos ancetres ? Qui étaient-ils ? Comment vivaient-ils ?",
-    //   link: "/articles/histoire",
-    //   delay: 400,
-    // },
-    // {
-    //   id: 5,
-    //   title: "Nos territoires",
-    //   description: "Découvrez le pays du Mulega, les territoires où il a ancré sa culture",
-    //   link: '/articles/territoires',
-    //   delay: '500'
-    // },
-    // {
-    //   id: 6,
-    //   title: "Notabilité chez les Balega",
-    //   description: "Découvrez qui sont ceux qui portent les blasons de notre communauté",
-    //   link: '/articles/notabilite',
-    //   delay: '600'
-    // }
+    {
+      id: 4,
+      title: "Histoire",
+      description: "D'où viennent nos ancetres ? Qui étaient-ils ? Comment vivaient-ils ?",
+      link: "/articles/histoire",
+      delay: 400,
+    },
+    {
+      id: 5,
+      title: "Nos territoires",
+      description: "Découvrez le pays du Mulega, les territoires où il a ancré sa culture",
+      link: '/articles/territoires',
+      delay: '500'
+    },
+    {
+      id: 6,
+      title: "Notabilité chez les Balega",
+      description: "Découvrez qui sont ceux qui portent les blasons de notre communauté",
+      link: '/articles/notabilite',
+      delay: '600'
+    }
   ];
 
   return (

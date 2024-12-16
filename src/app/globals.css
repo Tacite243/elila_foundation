@@ -1239,6 +1239,7 @@ section,
 
 .faq .faq-container .faq-item:last-child {
   margin-bottom: 0;
+  color: #ff0000;
 }
 
 .faq .faq-container .faq-item h3 {
@@ -1645,7 +1646,7 @@ iframe {
 }
 
 .faq-container .showmore {
-  color: #ff0000;
+  color: #005b8f;
 }
 
 .container.copyright button, .showmore {
@@ -1770,63 +1771,4 @@ iframe {
 
 .title-with-underline .underline::after {
   background-color: #ff0000; /* Rouge */
-}
-
-
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.popup-content {
-  position: relative;
-  background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  max-width: 90%;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-}
-
-.close-button:hover {
-  color: #ff0000; /* Couleur au survol */
-}
-
-.title-with-underline {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.underline span {
-  display: block;
-  height: 2px;
-  background-color: #000;
-  width: 50%;
-  margin: 0.5rem auto 0;
-}
-
-.error {
-  color: red;
-  text-align: center;
-  margin-bottom: 1rem;
 }
