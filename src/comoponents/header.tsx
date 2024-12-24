@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-// import Image from "next/image";
+import Image from "next/image";
 import { useState } from "react";
 import { usePathname } from 'next/navigation';
 import '@/app/globals.css';
@@ -58,8 +58,8 @@ const Header: React.FC = () => {
         <header id="header" className="header d-flex align-items-center sticky-top">
             <div className="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
                 <Link href="/" className="logo d-flex align-items-center">
-                    {/* <Image src="/elila-logo.png" alt="Logo" width={50} height={50} /> */}
-                    <h1>Elila foundation</h1>
+                    <Image src="/elila-logo.png" alt="Logo" width={500} height={100} />
+                    {/* <h1>Elila foundation</h1> */}
                 </Link>
 
                 <nav
