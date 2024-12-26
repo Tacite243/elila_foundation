@@ -1,6 +1,5 @@
 'use client'
 
-import '@/app/globals.css';
 import AboutSection from '@/comoponents/about';
 import HeroSection from '@/comoponents/hero';
 import ProgrammeSection from '@/comoponents/programmes';

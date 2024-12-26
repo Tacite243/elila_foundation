@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import "@/app/globals.css";
+// import "@/app/globals.css";
 
 const Loader = () => {
     const [loading, setLoading] = useState(true);

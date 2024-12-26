@@ -1,6 +1,6 @@
 'use client'
 import React from "react";
-import '@/app/globals.css'
+// import '@/app/globals.css'
 
 const IdentificationPage: React.FC = () => {
     return (
