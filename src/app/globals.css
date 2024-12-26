@@ -1742,6 +1742,7 @@ iframe {
 .title-with-underline {
   position: relative;
   display: inline-block;
+
 }
 
 .title-with-underline .underline {
@@ -1771,4 +1772,12 @@ iframe {
 
 .title-with-underline .underline::after {
   background-color: #ff0000; /* Rouge */
+}
+
+.login-popup {
+  color: var(--accent-color);
+}
+
+.btn-submit {
+  color: var(--accent-color) !important;
 }

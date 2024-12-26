@@ -48,7 +48,7 @@ const OurCultureSection = () => {
       id: 5,
       title: "Nos territoires",
       description: "Découvrez le pays du Mulega, les territoires où il a ancré sa culture",
-      link: '/articles/territoires',
+      link: '/articles/territoire',
       delay: '500'
     },
     {

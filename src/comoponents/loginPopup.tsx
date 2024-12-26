@@ -42,7 +42,7 @@ const LoginPopup = ({ onClose }: LoginPopupProps) => {
           &times;
         </button>
 
-        <h2 className="title-with-underline">
+        <h2 className="title-with-underline login-popup">
           {isRegister ? "Créer un compte" : "Connexion"}
           <span className="underline">
             <span></span>
@@ -64,7 +64,7 @@ const LoginPopup = ({ onClose }: LoginPopupProps) => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">
+          <button type="submit" className="btn-submit">
             {isRegister ? "Créer un compte" : "Se connecter"}
           </button>
         </form>

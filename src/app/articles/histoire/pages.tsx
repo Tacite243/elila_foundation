@@ -1,6 +1,6 @@
 "use client"
 
-import ArticleFormat from "@/comoponents/articleFormat";
+import ArticleFormat from "@/comoponents/articleFormat"
 
 
 export default function Histoire() {

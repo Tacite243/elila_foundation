@@ -94,12 +94,12 @@ const Team = () => {
                   <h4>{member.name}</h4>
                   <span>{member.position}</span>
                   <p>{member.description}</p>
-                  <div className="social">
+                  {/* <div className="social">
                     {member.socialLinks.twitter && <a href={member.socialLinks.twitter}><i className="bi bi-twitter-x"></i></a>}
                     {member.socialLinks.facebook && <a href={member.socialLinks.facebook}><i className="bi bi-facebook"></i></a>}
                     {member.socialLinks.instagram && <a href={member.socialLinks.instagram}><i className="bi bi-instagram"></i></a>}
                     {member.socialLinks.linkedin && <a href={member.socialLinks.linkedin}><i className="bi bi-linkedin"></i></a>}
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
