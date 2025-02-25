@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Link from 'next/link';
 
 
 
@@ -20,42 +21,42 @@ const OurCultureSection = () => {
       id: 1,
       title: 'Mariage',
       description: "Découvrez ici les valeurs coutimières du mariage dans notre communauté ",
-      link: '/articles/mariage',
+      link: '/pages/articles/mariage',
       delay: 100,
     },
     {
       id: 2,
       title: 'Education (initiation)',
       description: "Découvrer ce qu'est vraiment l'initiation chez nous, lutende",
-      link: '/articles/education',
+      link: '/pages/articles/education',
       delay: 200,
     },
     {
       id: 3,
       title: 'Spiritualité',
       description: 'Chaque peuple a sa propre spiritualité, découvrez celle de nos ancetres',
-      link: '/articles/spiritualite',
+      link: '/pages/articles/spiritualite',
       delay: 300,
     },
     {
       id: 4,
       title: "Histoire",
       description: "D'où viennent nos ancetres ? Qui étaient-ils ? Comment vivaient-ils ?",
-      link: "/articles/histoire",
+      link: "/pages/articles/histoire",
       delay: 400,
     },
     {
       id: 5,
       title: "Nos territoires",
       description: "Découvrez le pays du Mulega, les territoires où il a ancré sa culture",
-      link: '/articles/territoire',
+      link: '/pages/articles/territoire',
       delay: '500'
     },
     {
       id: 6,
       title: "Notabilité chez les Balega",
       description: "Découvrez qui sont ceux qui portent les blasons de notre communauté",
-      link: '/articles/notabilite',
+      link: '/pages/articles/notabilite',
       delay: '600'
     }
   ];
@@ -84,9 +85,9 @@ const OurCultureSection = () => {
               <div className="card-item">
                 <span>{String(id).padStart(2, '0')}</span>
                 <h4>
-                  <a href={link} className="stretched-link">
-                    {title}
-                  </a>
+                  {/* <a href={link} className="stretched-link"> */}
+                    <Link href={link}>{title}</Link>
+                  {/* </a> */}
                 </h4>
                 <p>{description}</p>
               </div>

@@ -26,21 +26,21 @@
         "id": 1,
         "title": "Mariage",
         "description": "Découvrez ici les valeurs coutumières du mariage dans notre communauté",
-        "link": "/articles/mariage",
+        "link": "/pages/articles/mariage",
         "delay": 100
       },
       {
         "id": 2,
         "title": "Education (initiation)",
         "description": "Découvrez ce qu'est vraiment l'initiation chez nous, le Lutende",
-        "link": "/articles/education",
+        "link": "/pages/articles/education",
         "delay": 200
       },
       {
         "id": 3,
         "title": "Spiritualité",
         "description": "Chaque peuple a sa propre spiritualité, découvrez celle de nos ancêtres",
-        "link": "/articles/spiritualite",
+        "link": "/pages/articles/spiritualite",
         "delay": 300
       }
     ]
