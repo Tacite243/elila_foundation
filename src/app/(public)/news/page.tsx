@@ -1,126 +1,391 @@
-"use client"
+"use client";
 
-import { ArrowRight } from 'lucide-react';
-import Link from 'next/link';
-import Image from 'next/image';
-import ArticleGrid from '@/components/ArticleGrid';
-import NewsletterForm from '@/components/NewsletterForm';
-import React, { useEffect } from "react";
-import { FeaturedArticleSkeleton } from '@/components/ArticleSkeleton';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { RootState } from '@/redux/store';
-import { fetchPublicArticles } from '@/redux/slices/articlesSlice';
+import React, { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Search,
+  Calendar,
+  Tag,
+  ChevronLeft,
+  ChevronRight,
+  Filter,
+  ArrowUpDown,
+} from "lucide-react";
 
-
-export type PubliArticle = {
-    id: string;
-    title: string;
-    slug: string;
-    excerpt: string;
-    image: string;
-    readTime: string;
-    createdAt: string;
-    category: { name: string };
-    author: { name: string | null };
+// --- 1. VOS DONNÉES ---
+const rawData = {
+  articles: {
+    education: {
+      title: "L’Initiation (Lutende) chez le Peuple Lega",
+      underTitle: "Un Rite de Passage Sacré",
+      description:
+        "Le Lutende n’est pas simplement un événement, mais un processus sacré et éducatif. Il symbolise l’intégration de l’individu dans la société adulte, avec ses droits et ses devoirs. Ce rite vise à former des citoyens respectueux des traditions.",
+      content: { section: "...", section1: "..." },
+      imgSource: "/images/initiation.jpeg",
+    },
+    spiritualite: {
+      title: "La Spiritualité chez le Peuple Lega",
+      underTitle: "Les Racines du Sacré",
+      description:
+        "Découvrez la spiritualité ancestrale des Léga, où la nature et le divin se rencontrent. Une exploration des croyances qui fondent notre identité et notre rapport au monde.",
+      content: { section: "...", section1: "..." },
+      imgSource: "/images/cta-bg.jpg",
+    },
+    mariage: {
+      title: "Le Mariage Coutumier",
+      underTitle: "Alliance et Tradition",
+      description:
+        "Le mariage chez les Lega dépasse l'union de deux êtres : c'est l'alliance de deux familles et la pérennisation des valeurs claniques à travers des rituels précis.",
+      content: {},
+      imgSource: "/images/nuptiae.jpg",
+    },
+    art: {
+      title: "L'Art et les Masques Lega",
+      underTitle: "Expression Culturelle",
+      description:
+        "Les masques Lega ne sont pas de simples objets décoratifs. Ils sont les vecteurs d'enseignements philosophiques et moraux transmis au sein du Bwami.",
+      content: {},
+      imgSource:
+        "/images/primary_Android_media_com.whatsapp.w4b_WhatsApp Business_Media_.Statuses_e181cde98a0c418b8a665f79293db56e.jpg",
+    },
+    territoire: {
+      title: "Nos Terres Ancestrales",
+      underTitle: "Géographie et Histoire",
+      description:
+        "Voyage au cœur de Mwenga, Shabunda et Pangi. Comprendre le lien viscéral qui unit le peuple Lega à ses forêts et ses montagnes.",
+      content: {},
+      imgSource: "/images/nature.jpg",
+    },
+  },
 };
 
-const NewsPage = () => {
-    // const [articles, setArticles] = useState<PubliArticle[]>([]);
-    // const [isLoading, setIsLoading] = useState(true);
-    // const [error, setError] = useState<string | null>(null);
+// --- 2. TRANSFORMATION DES DONNÉES ---
 
-    const dispatch = useAppDispatch();
-    const { publicItems: articles, publicStatus: status } = useAppSelector((state: RootState) => state.articles);
+// Fonction pour grouper les articles par grandes catégories pour le filtre
+const getCategory = (key: string) => {
+  switch (key) {
+    case "education":
+    case "spiritualite":
+      return "Culture";
+    case "mariage":
+      return "Société";
+    case "art":
+      return "Art";
+    case "territoire":
+      return "Histoire";
+    default:
+      return "Divers";
+  }
+};
 
-    useEffect(() => {
-        // On ne fetch que si les données n'ont pas encore été chargées
-        if (status === 'idle') {
-            dispatch(fetchPublicArticles());
-        }
-    }, [status, dispatch]);
+const articlesList = Object.entries(rawData.articles).map(
+  ([key, value], index) => {
+    // Simulation de dates décroissantes pour le tri
+    const fakeDate = new Date();
+    fakeDate.setDate(fakeDate.getDate() - index * 5);
 
-    const isLoading = status === 'loading' || status === 'idle';
-    const hasError = status === 'failed';
+    return {
+      id: key,
+      slug: key,
+      title: value.title,
+      category: getCategory(key), // Catégorie générique (Culture, Art...)
+      subtitle: value.underTitle, // Sous-titre spécifique
+      excerpt: value.description,
+      image: value.imgSource,
+      date: fakeDate.toISOString().split("T")[0],
+    };
+  }
+);
 
-    // Définir l'article à la une UNIQUEMENT si les données sont chargées
-    const featuredArticle = !isLoading && articles.length > 0 ? articles[0] : null;
+const ITEMS_PER_PAGE = 6;
 
-    // Extraire la liste des catégories à partir des articles chargés
-    const availableCategories = ['Tous', ...new Set(articles.map(a => a.category.name))];
+// --- 3. COMPOSANT PAGE ---
+export default function NewsPage() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Tous");
+  const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
+  const [currentPage, setCurrentPage] = useState(1);
 
-    return (
-        <main className="min-h-screen pt-20">
-            {/* Hero Section */}
-            <section className="py-24 bg-gradient-to-br from-blue-50 to-green-50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <div>
-                        <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6">
-                            Nos{" "}
-                            <span className="bg-gradient-to-r from-green-500 to-blue-600 bg-clip-text text-transparent">
-                                Actualités
-                            </span>
-                        </h1>
-                        <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                            Suivez l&apos;actualité de elila foundation, nos événements, nos succès et l&apos;impact
-                            de nos actions dans la communauté étudiante et locale
-                        </p>
+  const categories = [
+    "Tous",
+    ...Array.from(new Set(articlesList.map((a) => a.category))),
+  ];
+
+  const filteredArticles = useMemo(() => {
+    let result = [...articlesList];
+
+    if (searchTerm) {
+      const lowerTerm = searchTerm.toLowerCase();
+      result = result.filter(
+        (article) =>
+          article.title.toLowerCase().includes(lowerTerm) ||
+          article.excerpt.toLowerCase().includes(lowerTerm)
+      );
+    }
+
+    if (selectedCategory !== "Tous") {
+      result = result.filter(
+        (article) => article.category === selectedCategory
+      );
+    }
+
+    result.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
+    });
+
+    return result;
+  }, [searchTerm, selectedCategory, sortOrder]);
+
+  const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE);
+  const currentArticles = filteredArticles.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory, sortOrder]);
+
+  return (
+    <section className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-32 pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* EN-TÊTE */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <div className="inline-block relative">
+            <h1 className="text-4xl md:text-5xl font-bold text-primary dark:text-primary-foreground tracking-tight">
+              Actualités & Ressources
+            </h1>
+            <motion.div
+              className="absolute -bottom-3 left-0 h-1.5 w-full origin-left"
+              style={{
+                background:
+                  "linear-gradient(to right, #007BFF 40%, #FFC107 40%, #FFC107 70%, #DC3545 70%)",
+              }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            />
+          </div>
+          <p className="mt-6 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Restez informé des dernières actions de la Fondation Elila,
+            découvrez nos articles culturels et suivez nos projets sur le
+            terrain.
+          </p>
+        </motion.div>
+
+        {/* BARRE D'OUTILS */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-12 border border-gray-100 dark:border-gray-700 sticky top-24 z-30"
+        >
+          <div className="flex flex-col lg:flex-row gap-6 justify-between items-center">
+            {/* Recherche */}
+            <div className="relative w-full lg:w-1/3">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <input
+                type="text"
+                placeholder="Rechercher..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+              />
+            </div>
+
+            {/* Catégories (Scrollbar cachée) */}
+            <div className="flex gap-2 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto scrollbar-hide">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                    selectedCategory === cat
+                      ? "bg-primary text-primary-foreground shadow-md"
+                      : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {/* Tri */}
+            <div className="flex items-center gap-2 min-w-max">
+              <span className="text-sm text-gray-500 dark:text-gray-400 hidden sm:inline">
+                Trier :
+              </span>
+              <button
+                onClick={() =>
+                  setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                }
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:border-primary hover:text-primary transition-all"
+              >
+                <ArrowUpDown size={16} />
+                <span className="text-sm font-medium">
+                  {sortOrder === "desc" ? "Récent" : "Ancien"}
+                </span>
+              </button>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* GRILLE D'ARTICLES */}
+        {currentArticles.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <AnimatePresence mode="popLayout">
+              {currentArticles.map((article) => (
+                <motion.article
+                  key={article.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  className="group flex flex-col bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 h-full"
+                >
+                  <Link
+                    href={`/news/${article.slug}`}
+                    className="relative h-56 w-full overflow-hidden block"
+                  >
+                    <Image
+                      src={article.image}
+                      alt={article.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute top-4 left-4 bg-primary/90 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm shadow-sm">
+                      <Tag size={12} />
+                      <span className="truncate max-w-[150px]">
+                        {article.category}
+                      </span>
                     </div>
-                </div>
-            </section>
+                  </Link>
 
-            {/* Featured Article */}
-            <section className="py-16 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-8">Article à la Une</h2>
-                    {isLoading ? (
-                        <FeaturedArticleSkeleton />
-                    ) : hasError ? (
-                        <p className="text-red-500 text-center">Une erreur est survenue lors du chargement des articles.</p>
-                    ) : featuredArticle ? (
-                        <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                            <div className="relative h-80 w-full">
-                                <Image
-                                    src={featuredArticle.image}
-                                    alt={featuredArticle.title}
-                                    fill style={{ objectFit: 'cover' }}
-                                    className="rounded-2xl shadow-xl"
-                                    priority
-                                />
-                            </div>
-                            <div>
-                                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold mb-4 inline-block">
-                                    {featuredArticle.category.name}
-                                </span>
-                                <h3 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">{featuredArticle.title}</h3>
-                                <p className="text-lg text-gray-600 mb-6 leading-relaxed">{featuredArticle.excerpt}</p>
-                                <Link href={`/news/${featuredArticle.slug}`} className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold flex items-center ...">
-                                    <span>Lire l&apos;Article</span>
-                                    <ArrowRight size={18} />
-                                </Link>
-                            </div>
-                        </article>
-                    ) : (
-                        <p className="text-center text-gray-500">Aucun article à la une disponible.</p>
-                    )}
-                </div>
-            </section>
+                  <div className="flex flex-col flex-grow p-6">
+                    <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-3">
+                      <div className="flex items-center">
+                        <Calendar size={14} className="mr-2 text-accent" />
+                        {new Date(article.date).toLocaleDateString("fr-FR", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </div>
+                    </div>
 
-            {/* Articles Grid */}
-            {/* On ne rend la grille que si le chargement est terminé et sans erreur */}
-            {!isLoading && !hasError && (
-                <ArticleGrid articles={articles} categories={availableCategories} />
-            )}
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                      <Link href={`/news/${article.slug}`}>
+                        {article.title}
+                      </Link>
+                    </h3>
 
-            {/* Newsletter Section */}
-            <section className="py-24 bg-gradient-to-r from-green-600 to-blue-600 relative">
-                <div className="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-                    <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">Restez Informé</h2>
-                    <p className="text-xl text-white/90 mb-8 leading-relaxed">Abonnez-vous à notre newsletter...</p>
-                    <NewsletterForm />
-                </div>
-            </section>
-        </main>
-    );
-};
+                    {/* Affichage du sous-titre */}
+                    <p className="text-sm text-primary font-medium mb-2">
+                      {article.subtitle}
+                    </p>
 
-export default NewsPage;
+                    <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-6 flex-grow">
+                      {article.excerpt}
+                    </p>
+
+                    <Link
+                      href={`/news/${article.slug}`}
+                      className="inline-flex items-center text-primary font-semibold text-sm hover:text-accent transition-colors mt-auto"
+                    >
+                      Lire l&apos;article
+                      <ChevronRight
+                        size={16}
+                        className="ml-1 transition-transform group-hover:translate-x-1"
+                      />
+                    </Link>
+                  </div>
+                </motion.article>
+              ))}
+            </AnimatePresence>
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-20 bg-white dark:bg-gray-800 rounded-3xl"
+          >
+            <Filter className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              Aucun résultat
+            </h3>
+            <p className="text-gray-500 mt-2">
+              Aucun article ne correspond à vos critères.
+            </p>
+            <button
+              onClick={() => {
+                setSearchTerm("");
+                setSelectedCategory("Tous");
+              }}
+              className="mt-6 px-6 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+            >
+              Réinitialiser
+            </button>
+          </motion.div>
+        )}
+
+        {/* PAGINATION */}
+        {totalPages > 1 && (
+          <div className="mt-16 flex justify-center items-center gap-4">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="p-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <ChevronLeft size={20} />
+            </button>
+
+            <div className="flex gap-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`w-10 h-10 rounded-full font-medium transition-all ${
+                      currentPage === page
+                        ? "bg-primary text-primary-foreground shadow-md scale-110"
+                        : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
+            </div>
+
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="p-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        )}
+      </div>
+
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+    </section>
+  );
+}

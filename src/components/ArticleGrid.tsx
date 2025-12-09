@@ -5,9 +5,19 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import type { PubliArticle } from '@/app/(public)/news/page';
 
 
+// 1. On définit l'interface ici (ou on la déplace dans un fichier types.ts partagé)
+export interface PubliArticle {
+    id: string;
+    title: string;
+    slug: string;
+    image: string;
+    category: {
+        id: string;
+        name: string;
+    };
+}
 
 interface ArticleGridProps {
     articles: PubliArticle[];
