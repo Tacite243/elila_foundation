@@ -1,14 +1,14 @@
-import { PrismaClient } from '@prisma/client';
-import { hash } from 'bcrypt';
+import { PrismaClient } from "@prisma/client";
+import { hash } from "bcrypt";
 
 const prisma = new PrismaClient();
 
 async function main() {
   // ... le reste de votre fonction main
-  console.log('Début du seeding...');
+  console.log("Début du seeding...");
 
   // --- VARIABLES À CONFIGURER ---
-  const adminEmail = "admin@welead.org";
+  const adminEmail = "admin@gmail.org";
   const adminPassword = "SuperSecretPassword123";
   // ------------------------------
 
@@ -19,14 +19,23 @@ async function main() {
     update: {},
     create: {
       email: adminEmail,
-      name: 'Admin WeLead',
+      name: "Admin User",
       password: hashedPassword,
     },
   });
 
   console.log(`Utilisateur administrateur créé/confirmé : ${adminUser.email}`);
 
-  const categoriesToCreate = ["Conférences", "Formations", "Actions Sociales", "Événements", "Programmes", "Impact", "Partenariats", "Témoignages"];
+  const categoriesToCreate = [
+    "Conférences",
+    "Formations",
+    "Actions Sociales",
+    "Événements",
+    "Programmes",
+    "Impact",
+    "Partenariats",
+    "Témoignages",
+  ];
 
   for (const catName of categoriesToCreate) {
     await prisma.category.upsert({
@@ -37,7 +46,7 @@ async function main() {
     console.log(`Catégorie "${catName}" créée/confirmée.`);
   }
 
-  console.log('Seeding terminé avec succès.');
+  console.log("Seeding terminé avec succès.");
 }
 
 main()

@@ -59,34 +59,38 @@ const Header: React.FC = () => {
       animate={{ y: 0 }}
       className={`fixed w-full z-50 transition-all duration-300 ${
         isOpaque
-          ? "bg-white/90 backdrop-blur-lg shadow-lg border-b border-gray-200/20"
+          ? "bg-white/95 backdrop-blur-lg shadow-lg border-b border-gray-200/20"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 lg:h-20">
-          {/* LOGO */}
-          <motion.div whileHover={{ scale: 1.05 }}>
-            <Link href="/" className="flex items-center space-x-3">
-              <Image
-                src="/ELILA FOUNDATION WHITE.png"
-                alt="Logo"
-                width={60}
-                height={60}
-                className="h-12 w-auto object-contain"
-                priority
-              />
+        <div className="flex justify-between items-center h-20 lg:h-24"> 
+          {/* J'ai augmenté un peu la hauteur globale de la nav (h-20 au lieu de h-16) pour accommoder un plus gros logo */}
+          
+          {/* LOGO & TITRE */}
+          <motion.div whileHover={{ scale: 1.02 }} className="flex-shrink-0">
+            <Link href="/" className="flex items-center gap-3 sm:gap-4">
+              {/* MODIFICATION ICI : Taille du logo augmentée */}
+              <div className="relative h-12 w-12 sm:h-14 sm:w-14">
+                <Image
+                  src="/ELILA FOUNDATION BLUE.png"
+                  alt="Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
 
-              <div className="hidden sm:block">
+              <div className="flex flex-col justify-center">
                 <h1
-                  className={`font-bold text-lg ${
+                  className={`font-bold leading-none tracking-tight transition-colors ${
                     isOpaque ? "text-gray-900" : "text-white"
-                  }`}
+                  } text-lg sm:text-xl`} // Texte plus grand
                 >
                   Elila Foundation
                 </h1>
                 <p
-                  className={`text-xs ${
+                  className={`text-xs font-medium mt-1 transition-colors ${
                     isOpaque ? "text-gray-600" : "text-gray-200"
                   }`}
                 >
@@ -132,11 +136,11 @@ const Header: React.FC = () => {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(!isOpen)}
-            className={`lg:hidden p-2 rounded-lg ${
+            className={`lg:hidden p-2 rounded-lg focus:outline-none ${
               isOpaque ? "text-gray-700" : "text-white"
             }`}
           >
-            {isOpen ? <X size={26} /> : <Menu size={26} />}
+            {isOpen ? <X size={32} /> : <Menu size={32} />} {/* Icône burger un peu plus grande aussi */}
           </motion.button>
         </div>
       </div>
@@ -148,9 +152,9 @@ const Header: React.FC = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200/20"
+            className="lg:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200/20 shadow-xl overflow-hidden"
           >
-            <div className="px-4 py-4 space-y-2 max-h-[70vh] overflow-y-auto">
+            <div className="px-4 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
               {navItems.map((item) => {
                 const href = getHref(item);
                 const Icon = item.icon;
@@ -160,22 +164,22 @@ const Header: React.FC = () => {
                 return (
                   <Link key={item.label} href={href}>
                     <motion.div
-                      whileTap={{ scale: 0.95 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => setIsOpen(false)}
-                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                      className={`flex items-center space-x-4 px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${
                         isActive
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-green-100 text-green-700 shadow-sm"
                           : "text-gray-700 hover:bg-gray-100"
                       }`}
                     >
-                      {Icon && <Icon size={18} />}
+                      {Icon && <Icon size={20} />}
                       <span>{item.label}</span>
                     </motion.div>
                   </Link>
                 );
               })}
 
-              <div className="pt-6 flex justify-center">
+              <div className="pt-6 mt-4 border-t border-gray-100 flex justify-center">
                 <ThemeSwitcher isOpaque />
               </div>
             </div>

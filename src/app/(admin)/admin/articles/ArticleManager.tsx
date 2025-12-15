@@ -4,82 +4,132 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import {
-    setArticles,
-    deleteArticle,
-    ArticleWithRelations,
+  setArticles,
+  deleteArticle,
+  ArticleWithRelations,
 } from "@/redux/slices/articlesSlice";
 import Link from "next/link";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, Eye, CheckCircle, XCircle } from "lucide-react";
 
 interface ArticleManagerProps {
-    initialArticles: ArticleWithRelations[];
+  initialArticles: ArticleWithRelations[];
 }
 
-export default function ArticleManager({ initialArticles }: ArticleManagerProps) {
-    const dispatch = useDispatch<AppDispatch>();
+export default function ArticleManager({
+  initialArticles,
+}: ArticleManagerProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    items: articles,
+    status,
+    mutationStatus,
+  } = useSelector((state: RootState) => state.articles);
 
-    const { items: articles, status, mutationStatus } = useSelector(
-        (state: RootState) => state.articles
-    );
+  useEffect(() => {
+    dispatch(setArticles(initialArticles));
+  }, [dispatch, initialArticles]);
 
-    useEffect(() => {
-        dispatch(setArticles(initialArticles));
-    }, [dispatch, initialArticles]);
+  const handleDelete = (id: string) => {
+    if (confirm("Êtes-vous sûr de vouloir supprimer cet article ?")) {
+      dispatch(deleteArticle(id));
+    }
+  };
 
-    const handleDelete = (id: string) => {
-        if (confirm("Êtes-vous sûr de vouloir supprimer cet article ?")) {
-            dispatch(deleteArticle(id));
-        }
-    };
-
-    if (status === "loading") return <p>Chargement des articles...</p>;
-
+  if (status === "loading")
     return (
-        <div className="bg-white p-4 rounded-lg shadow">
-            <table className="w-full text-sm text-left border border-gray-200">
-                <thead className="bg-gray-100 text-xs uppercase text-gray-600">
-                    <tr>
-                        <th className="p-2">Titre</th>
-                        <th className="p-2">Slug</th>
-                        <th className="p-2">Catégorie</th>
-                        <th className="p-2">Auteur</th>
-                        <th className="p-2">Publié</th>
-                        <th className="p-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {articles.map((article) => (
-                        <tr key={article.id} className="border-b hover:bg-gray-50">
-                            <td className="p-2">{article.title}</td>
-                            <td className="p-2 text-gray-500">{article.slug}</td>
-                            <td className="p-2">{article.category?.name || "—"}</td>
-                            <td className="p-2">{article.author?.name || "—"}</td>
-                            <td className="p-2">
-                                {article.published ? (
-                                    <span className="text-green-600 font-semibold">Oui</span>
-                                ) : (
-                                    <span className="text-red-500 font-semibold">Non</span>
-                                )}
-                            </td>
-                            <td className="p-2 flex items-center space-x-2">
-                                <Link
-                                    href={`/admin/articles/edit/${article.id}`}
-                                    className="text-blue-600 hover:text-blue-800"
-                                >
-                                    <Edit size={18} />
-                                </Link>
-                                <button
-                                    onClick={() => handleDelete(article.id)}
-                                    className="text-red-600 hover:text-red-800 disabled:text-gray-400"
-                                    disabled={mutationStatus === "loading"}
-                                >
-                                    <Trash2 size={18} />
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+      <div className="p-8 text-center text-slate-500 animate-pulse">
+        Chargement des articles...
+      </div>
     );
+
+  if (articles.length === 0)
+    return (
+      <div className="p-12 text-center text-slate-500 bg-slate-50 rounded-lg border border-slate-200">
+        Aucun article trouvé. Commencez par en créer un !
+      </div>
+    );
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left">
+          <thead className="bg-slate-50 text-xs uppercase text-slate-500 font-semibold border-b border-slate-200">
+            <tr>
+              <th className="px-6 py-4">Titre</th>
+              <th className="px-6 py-4">Catégorie</th>
+              <th className="px-6 py-4">Auteur</th>
+              <th className="px-6 py-4 text-center">Statut</th>
+              <th className="px-6 py-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {articles.map((article) => (
+              <tr
+                key={article.id}
+                className="hover:bg-slate-50/50 transition-colors group"
+              >
+                <td className="px-6 py-4">
+                  <div
+                    className="font-medium text-slate-900 line-clamp-1"
+                    title={article.title}
+                  >
+                    {article.title}
+                  </div>
+                  <div className="text-xs text-slate-400 mt-1 font-mono">
+                    {article.slug}
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                    {article.category?.name || "Non classé"}
+                  </span>
+                </td>
+                <td className="px-6 py-4 text-slate-600">
+                  {article.author?.name || "Inconnu"}
+                </td>
+                <td className="px-6 py-4 text-center">
+                  {article.published ? (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                      <CheckCircle size={12} /> Publié
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">
+                      <XCircle size={12} /> Brouillon
+                    </span>
+                  )}
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center justify-end gap-2">
+                    <Link
+                      href={`/news/${article.slug}`}
+                      target="_blank"
+                      className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="Voir"
+                    >
+                      <Eye size={18} />
+                    </Link>
+                    <Link
+                      href={`/admin/articles/edit/${article.id}`}
+                      className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="Modifier"
+                    >
+                      <Edit size={18} />
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(article.id)}
+                      className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                      disabled={mutationStatus === "loading"}
+                      title="Supprimer"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }

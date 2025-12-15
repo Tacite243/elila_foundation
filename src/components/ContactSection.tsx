@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 
 // --- Données de Contact ---
 const contactDetails = [
@@ -58,15 +58,19 @@ export default function ContactSection() {
     e.preventDefault();
     setStatus({ loading: true, error: "", success: "" });
 
-    // TODO: Remplacer par votre logique d'envoi d'API
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulation d'un appel réseau
+      // Simulation d'envoi
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       setStatus({
         loading: false,
         error: "",
         success: "Votre message a été envoyé avec succès !",
       });
-      setFormData({ name: "", email: "", message: "" }); // Vider le formulaire
+      setFormData({ name: "", email: "", message: "" });
+
+      // Reset du message de succès après 5 secondes
+      setTimeout(() => setStatus(prev => ({ ...prev, success: '' })), 5000);
+
     } catch (error) {
       setStatus({
         loading: false,
@@ -77,8 +81,10 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 sm:py-28 bg-gray-50 dark:bg-gray-800">
+    // CORRECTION ICI : Ajout de 'overflow-hidden' pour empêcher le débordement horizontal sur mobile
+    <section id="contact" className="py-20 sm:py-28 bg-gray-50 dark:bg-gray-800 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Titre de la section */}
         <motion.div
           className="text-center mb-16"
@@ -111,6 +117,7 @@ export default function ContactSection() {
 
         {/* Grille principale */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
           {/* Colonne d'info */}
           <motion.div
             className="lg:col-span-1 space-y-8"
@@ -121,19 +128,19 @@ export default function ContactSection() {
             viewport={{ once: true, amount: 0.3 }}
           >
             {contactDetails.map((item, index) => (
-              <div key={index} className="flex items-start">
-                <div className="flex-shrink-0 h-14 w-14 bg-primary text-primary-foreground rounded-xl flex items-center justify-center">
-                  <item.Icon className="h-7 w-7" />
+              <div key={index} className="flex items-start group">
+                <div className="flex-shrink-0 h-14 w-14 bg-primary text-primary-foreground rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 duration-300 shadow-md">
+                  <item.Icon className="h-6 w-6" />
                 </div>
-                <div className="ml-4">
-                  <h3 className="text-xl font-bold text-primary dark:text-primary-foreground">
+                <div className="ml-5">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                     {item.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
                     {item.line1}
                   </p>
                   {item.line2 && (
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                       {item.line2}
                     </p>
                   )}
@@ -144,7 +151,7 @@ export default function ContactSection() {
 
           {/* Colonne du formulaire */}
           <motion.div
-            className="lg:col-span-2 bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg"
+            className="lg:col-span-2 bg-white dark:bg-gray-900 p-8 md:p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700"
             variants={slideInFromRight}
             initial="initial"
             whileInView="whileInView"
@@ -153,10 +160,8 @@ export default function ContactSection() {
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="sr-only">
-                    Nom
-                  </label>
+                <div className="relative">
+                  <label htmlFor="name" className="sr-only">Nom</label>
                   <input
                     type="text"
                     id="name"
@@ -165,13 +170,11 @@ export default function ContactSection() {
                     onChange={handleInputChange}
                     required
                     placeholder="Votre nom"
-                    className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:outline-none"
+                    className="w-full px-5 py-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                   />
                 </div>
-                <div>
-                  <label htmlFor="email" className="sr-only">
-                    Email
-                  </label>
+                <div className="relative">
+                  <label htmlFor="email" className="sr-only">Email</label>
                   <input
                     type="email"
                     id="email"
@@ -180,14 +183,12 @@ export default function ContactSection() {
                     onChange={handleInputChange}
                     required
                     placeholder="Votre adresse mail"
-                    className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:outline-none"
+                    className="w-full px-5 py-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                   />
                 </div>
               </div>
-              <div>
-                <label htmlFor="message" className="sr-only">
-                  Message
-                </label>
+              <div className="relative">
+                <label htmlFor="message" className="sr-only">Message</label>
                 <textarea
                   id="message"
                   name="message"
@@ -195,37 +196,50 @@ export default function ContactSection() {
                   onChange={handleInputChange}
                   required
                   rows={6}
-                  placeholder="Votre message"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:outline-none resize-none"
+                  placeholder="Votre message..."
+                  className="w-full px-5 py-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none transition-all"
                 ></textarea>
               </div>
-              <div className="text-center">
+
+              <div className="text-center pt-2">
                 <button
                   type="submit"
                   disabled={status.loading}
-                  className="px-8 py-3 rounded-full font-semibold text-white bg-primary hover:bg-primary/90 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full font-bold text-white bg-primary hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg shadow-primary/25 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  {status.loading ? "Envoi en cours..." : "Envoyer le Message"}
+                  {status.loading ? (
+                    <>
+                      <Loader2 className="animate-spin h-5 w-5" />
+                      Envoi en cours...
+                    </>
+                  ) : (
+                    "Envoyer le Message"
+                  )}
                 </button>
               </div>
-              <AnimatePresence>
+
+              <AnimatePresence mode="wait">
                 {status.success && (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-center text-green-600"
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="flex items-center justify-center gap-2 p-4 mt-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-xl"
                   >
-                    {status.success}
-                  </motion.p>
+                    <CheckCircle className="h-5 w-5" />
+                    <p className="font-medium">{status.success}</p>
+                  </motion.div>
                 )}
                 {status.error && (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-center text-red-600"
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="flex items-center justify-center gap-2 p-4 mt-4 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-xl"
                   >
-                    {status.error}
-                  </motion.p>
+                    <AlertCircle className="h-5 w-5" />
+                    <p className="font-medium">{status.error}</p>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </form>
