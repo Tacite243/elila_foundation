@@ -15,7 +15,7 @@ import type { createArticleSchema } from "@/schemas/article.schemas";
 import {
   CldUploadWidget,
   CloudinaryUploadWidgetResults,
-  CloudinaryUploadWidgetInfo,
+  CloudinaryUploadWidgetInfo
 } from "next-cloudinary";
 import Image from "next/image";
 import { Save, Upload, X, ArrowLeft, Image as ImageIcon } from "lucide-react";
@@ -64,6 +64,17 @@ export default function ArticleForm({
   const { mutationStatus, mutationError } = useSelector(
     (state: RootState) => state.articles
   );
+
+  // Vérification de la configuration Cloudinary
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
+  if (!cloudName) {
+    return (
+      <div className="p-4 bg-red-50 text-red-600 rounded-lg border border-red-200">
+        Erreur de configuration : La variable d'environnement <strong>NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME</strong> est manquante.
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (mutationStatus === "succeeded") {
@@ -184,7 +195,7 @@ export default function ArticleForm({
                   onSuccess={handleImageUploadSuccess}
                   onUploadAdded={() => setIsUploadingImage(true)}
                   options={{
-                    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+                    cloudName: cloudName,
                     maxImageFileSize: 5000000,
                     cropping: true,
                     folder: "articles_images",

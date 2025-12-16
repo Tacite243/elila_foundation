@@ -14,7 +14,7 @@ export default function AdminProjectsPage() {
             Gestion des Projets
           </h1>
           <p className="text-slate-500 mt-1">
-            Suivez l'avancement et gérez les initiatives de la fondation.
+            Suivez l&apos;avancement et gérez les initiatives de la fondation.
           </p>
         </div>
 
