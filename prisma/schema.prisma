@@ -1,0 +1,214 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  articles  Article[]
+}
+
+model Category {
+  id         String      @id @default(cuid())
+  name       String      @unique
+  articles   Article[]
+  mediaItems MediaItem[]
+}
+
+model Article {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  title      String
+  excerpt    String
+  content    String
+  image      String
+  readTime   String
+  published  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  authorId   String
+  categoryId String
+  author     User     @relation(fields: [authorId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+}
+
+model MediaItem {
+  id          String    @id @default(cuid())
+  src         String
+  title       String
+  description String?
+  date        String?
+  location    String?
+  createdAt   DateTime  @default(now())
+  categoryId  String
+  type        MediaType @default(IMAGE)
+  category    Category  @relation(fields: [categoryId], references: [id])
+}
+
+model Program {
+  id          String   @id @default(cuid())
+  icon        String
+  title       String
+  description String
+  features    String[]
+  color       String
+  image       String
+  order       Int      @default(0)
+  isPublished Boolean  @default(false)
+}
+
+model UpcomingEvent {
+  id        String    @id @default(cuid())
+  date      DateTime?
+  title     String
+  location  String
+  createdAt DateTime  @default(now())
+  type      EventType
+}
+
+model ContactInfo {
+  id      String   @id @default(cuid())
+  icon    String
+  title   String
+  details String[]
+  color   String
+  order   Int      @default(0)
+}
+
+model SocialLink {
+  id    String  @id @default(cuid())
+  label String
+  href  String
+  color String?
+  order Int     @default(0)
+}
+
+model SupportOption {
+  id          String @id @default(cuid())
+  icon        String
+  title       String
+  description String
+  color       String
+  order       Int    @default(0)
+}
+
+model Project {
+  id          String         @id @default(cuid())
+  title       String
+  slug        String         @unique
+  description String
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  status      ProjectStatus  @default(PLANNED)
+  images      ProjectImage[]
+}
+
+model ProjectImage {
+  id        String  @id @default(cuid())
+  url       String
+  altText   String?
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model JobOffer {
+  id               String           @id @default(cuid())
+  title            String
+  slug             String           @unique
+  organization     String           @default("We Lead Africa")
+  location         String
+  employmentType   JobType          @default(VOLUNTEERING)
+  workArrangement  WorkArrangement  @default(ON_SITE)
+  experienceLevel  ExperienceLevel  @default(JUNIOR)
+  description      String
+  responsibilities String[]
+  qualifications   String[]
+  salary           String?
+  howToApply       String
+  closingDate      DateTime?
+  isPublished      Boolean          @default(false)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  applications     JobApplication[]
+}
+
+model JobApplication {
+  id             String   @id @default(cuid())
+  applicantName  String
+  applicantEmail String
+  applicantPhone String?
+  cvUrl          String
+  coverLetter    String?
+  appliedAt      DateTime @default(now())
+  jobOfferId     String
+  jobOffer       JobOffer @relation(fields: [jobOfferId], references: [id], onDelete: Cascade)
+}
+
+// ==========================================
+// MODÈLE POUR LES STATISTIQUES D'IMPACT
+// ==========================================
+model ImpactStat {
+  id     String @id @default(cuid())
+  icon   String // Nom de l'icône Lucide (ex: "Users", "MapPin", "Camera")
+  number String // Le chiffre affiché (ex: "300+", "6+")
+  label  String // La description sous le chiffre
+  order  Int    @default(0) // Pour contrôler l'ordre d'affichage
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ProjectStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  ON_HOLD
+  CANCELLED
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  INTERNSHIP
+  VOLUNTEERING
+  CONTRACT
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
+
+enum EventType {
+  CONFERENCE
+  WORKSHOP
+  SOCIAL_ACTION
+  NETWORKING
+  WEBINAR
+}
+
+enum ExperienceLevel {
+  JUNIOR
+  MID_LEVEL
+  SENIOR
+  LEAD
+  EXECUTIVE
+}
+
+enum WorkArrangement {
+  ON_SITE
+  HYBRID
+  REMOTE
+}
