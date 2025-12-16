@@ -206,7 +206,7 @@ export default function ProjectFormModal({ isOpen, onClose, projectToEdit }: Pro
                                         ))}
 
                                         <CldUploadWidget
-                                            uploadPreset="welead_articles_preset"
+                                            uploadPreset="elila-found-preset"
                                             onSuccess={handleImageUpload}
                                             options={{ maxFiles: 5, resourceType: "image" }}
                                         >

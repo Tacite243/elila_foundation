@@ -175,7 +175,7 @@ export default function ArticleForm({
 
               {!formData.image ? (
                 <CldUploadWidget
-                  uploadPreset="welead_articles_preset"
+                  uploadPreset="elila-found-preset"
                   onSuccess={handleImageUploadSuccess}
                   onUploadAdded={() => setIsUploadingImage(true)}
                   options={{
