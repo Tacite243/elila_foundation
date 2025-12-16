@@ -23,20 +23,20 @@ interface ProjectFormModalProps {
     projectToEdit?: ProjectWithImages | null;
 }
 
+// Initialisation du state
+const initialFormState = {
+    title: '',
+    slug: '',
+    description: '',
+    status: 'PLANNED',
+    startDate: '',
+    endDate: '',
+    images: [] as string[] // On stocke les URLs des images temporairement ici
+};
+
 export default function ProjectFormModal({ isOpen, onClose, projectToEdit }: ProjectFormModalProps) {
     const dispatch = useDispatch<AppDispatch>();
     const { mutationStatus } = useSelector((state: RootState) => state.projects);
-
-    // Initialisation du state
-    const initialFormState = {
-        title: '',
-        slug: '',
-        description: '',
-        status: 'PLANNED',
-        startDate: '',
-        endDate: '',
-        images: [] as string[] // On stocke les URLs des images temporairement ici
-    };
 
     const [formData, setFormData] = useState(initialFormState);
     const [isSlugEdited, setIsSlugEdited] = useState(false);

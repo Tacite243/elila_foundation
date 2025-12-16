@@ -11,17 +11,17 @@ import {
 } from "@/redux/slices/articlesSlice";
 import type { Category, Article } from "@prisma/client";
 import type { createArticleSchema } from "@/schemas/article.schemas";
-// CORRECTION ICI : Import groupé et ajout de CloudinaryUploadWidgetInfo
 import {
   CldUploadWidget,
   CloudinaryUploadWidgetResults,
   CloudinaryUploadWidgetInfo
 } from "next-cloudinary";
 import Image from "next/image";
-import { Save, Upload, X, ArrowLeft, Image as ImageIcon } from "lucide-react";
+import { Save, Upload, X } from "lucide-react";
 import Link from "next/link";
 
-// Fonction utilitaire pour créer un slug (inchangée)
+
+// Fonction utilitaire pour créer un slug 
 const slugify = (text: string) =>
   text
     .toString()
@@ -51,12 +51,8 @@ export default function ArticleForm({
     categoryId: initialData?.categoryId || "",
   });
 
-  const [errors, setErrors] = useState<{ [key: string]: string[] | undefined }>(
-    {}
-  );
-  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(
-    !!initialData
-  );
+  const [errors, setErrors] = useState<{ [key: string]: string[] | undefined }>({});
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(!!initialData);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const router = useRouter();
@@ -65,42 +61,27 @@ export default function ArticleForm({
     (state: RootState) => state.articles
   );
 
-  // Vérification de la configuration Cloudinary
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-
-  if (!cloudName) {
-    return (
-      <div className="p-4 bg-red-50 text-red-600 rounded-lg border border-red-200">
-        Erreur de configuration : La variable d'environnement <strong>NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME</strong> est manquante.
-      </div>
-    );
-  }
-
   useEffect(() => {
     if (mutationStatus === "succeeded") {
       dispatch(resetMutationStatus());
       router.push("/admin/articles");
       router.refresh();
     }
-    if (
-      mutationStatus === "failed" &&
-      mutationError &&
-      "errors" in mutationError
-    ) {
+    if (mutationStatus === "failed" && mutationError && "errors" in mutationError) {
       setErrors(mutationError.errors.fieldErrors);
     } else {
       setErrors({});
     }
   }, [mutationStatus, mutationError, dispatch, router, initialData]);
 
+  // 2. CONSTANTES ET FONCTIONS
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
-    const finalValue =
-      type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
+    const finalValue = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
 
     setFormData((prev) => ({ ...prev, [name]: finalValue }));
 
@@ -110,15 +91,9 @@ export default function ArticleForm({
     if (name === "slug") setIsSlugManuallyEdited(true);
   };
 
-  // CORRECTION ICI : Typage explicite de 'info'
   const handleImageUploadSuccess = (result: CloudinaryUploadWidgetResults) => {
     setIsUploadingImage(false);
-    if (
-      result.event === "success" &&
-      result.info &&
-      typeof result.info !== "string"
-    ) {
-      // On force TypeScript à comprendre que result.info est de type CloudinaryUploadWidgetInfo
+    if (result.event === "success" && result.info && typeof result.info !== "string") {
       const info = result.info as CloudinaryUploadWidgetInfo;
       setFormData((prev) => ({ ...prev, image: info.secure_url }));
     }
@@ -132,6 +107,15 @@ export default function ArticleForm({
     else dispatch(createArticle(formData));
   };
 
+  // 3. RETOUR CONDITIONNEL (Seulement après les hooks)
+  if (!cloudName) {
+    return (
+      <div className="p-4 bg-red-50 text-red-600 rounded-lg border border-red-200">
+        Erreur de configuration : La variable d&apos;environnement <strong>NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME</strong> est manquante.
+      </div>
+    );
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -142,7 +126,7 @@ export default function ArticleForm({
         <div className="space-y-6">
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-2">
-              Titre de l'article
+              Titre de l&apos;article
             </label>
             <input
               type="text"

@@ -116,7 +116,7 @@ export default function ImpactStatForm({ isEditing = false, initialData }: Impac
                 </div>
 
                 <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-2">Ordre d'affichage</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-2">Ordre d&apos;affichage</label>
                     <input
                         type="number"
                         {...register('order', { valueAsNumber: true })}

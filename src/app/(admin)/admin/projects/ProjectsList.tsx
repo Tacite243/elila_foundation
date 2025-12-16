@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import ProjectManager from "./ProjectManager";
 import { AlertTriangle, RefreshCcw } from "lucide-react";
 
-// Ce composant est un Server Component (async).
+
 export default async function ProjectsList() {
   try {
     // 1. TENTATIVE DE RÉCUPÉRATION DES DONNÉES

@@ -14,9 +14,9 @@ import {
 import ProjectFormModal from "@/components/ProjectFormModal";
 import Image from "next/image";
 
-// --- C'EST ICI QUE VOUS AVEZ L'ERREUR DANS VOTRE CODE ACTUEL ---
-// Vous utilisiez l'interface de la modale au lieu de celle-ci :
+
 interface ProjectManagerProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialProjects: any[];
 }
 

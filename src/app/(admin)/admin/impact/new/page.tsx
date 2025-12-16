@@ -12,7 +12,7 @@ export default function NewImpactStatPage() {
                     </Link>
                     <div>
                         <h1 className="text-2xl font-bold text-slate-900">Nouvelle Statistique</h1>
-                        <p className="text-slate-500 text-sm">Ajouter un indicateur d'impact</p>
+                        <p className="text-slate-500 text-sm">Ajouter un indicateur d&apos;impact</p>
                     </div>
                 </div>
                 <ImpactStatForm isEditing={false} />

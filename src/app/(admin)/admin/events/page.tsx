@@ -65,7 +65,7 @@ export default function EventsAdminPage() {
                             <Calendar className="text-blue-600" size={32} />
                             Gestion des Événements
                         </h1>
-                        <p className="text-slate-500 mt-1">Planifiez et gérez l'agenda de la fondation.</p>
+                        <p className="text-slate-500 mt-1">Planifiez et gérez l&apos;agenda de la fondation.</p>
                     </div>
                     <button
                         onClick={() => dispatch(fetchEvents())}
@@ -90,7 +90,7 @@ export default function EventsAdminPage() {
 
                             <div className="divide-y divide-slate-100">
                                 {status === 'loading' && events.length === 0 && (
-                                    <div className="p-8 text-center text-slate-400 animate-pulse">Chargement de l'agenda...</div>
+                                    <div className="p-8 text-center text-slate-400 animate-pulse">Chargement de l&apos;agenda...</div>
                                 )}
 
                                 {error && (
