@@ -101,7 +101,7 @@ export default function HeroSection() {
             // Le même blanc cassé, mais avec une légère transparence pour hiérarchiser l'information
             className="mt-6 max-w-3xl text-lg md:text-xl text-primary-foreground/90"
           >
-            Une plateforme dédiée à la rencontre des LEGAS du pays et de la diaspora
+            Une plateforme dédiée à la rencontre des Legas du pays et de la diaspora
           </motion.p>
 
           <motion.div variants={fadeInUp} className="mt-12">
