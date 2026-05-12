@@ -157,8 +157,8 @@ export default function ArticleManager({
 
             {/* Contenu de la modale (Le formulaire scroll à l'intérieur) */}
             <div className="overflow-y-auto p-2">
-              {/* Remarque: Utilisez un casting de type as any ou adaptez l'interface si TypeScript rouspète pour les dates */}
               <ArticleForm
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 initialData={editingArticle as any}
                 categories={categories}
                 onClose={() => setEditingArticle(null)} // On passe la fonction pour fermer
