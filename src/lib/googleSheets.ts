@@ -8,10 +8,16 @@ export type IdentificationStats = {
 
 export async function getIdentificationStats(): Promise<IdentificationStats> {
     try {
+        // --- AJOUTEZ CE TEST ICI ---
+        console.log("--- TEST GOOGLE ENV ---");
+        console.log("Email :", process.env.GOOGLE_CLIENT_EMAIL);
+        console.log("Clé présente ? :", !!process.env.GOOGLE_PRIVATE_KEY);
+        console.log("-----------------------");
+
         // 1. Authentification avec le "Robot"
         const auth = new google.auth.GoogleAuth({
             credentials: {
-                client_email: process.env.GOOGLE_CLIENT_EMAIL,
+                client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
                 // Petite astuce : on remplace les \\n par de vrais sauts de ligne pour que la clé marche
                 private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
             },

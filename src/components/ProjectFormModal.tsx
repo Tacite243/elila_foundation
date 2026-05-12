@@ -11,15 +11,13 @@ import {
 } from "@/redux/slices/projectsSlice";
 import { X, Upload, Save, Trash2 } from "lucide-react";
 import { CldUploadWidget, CloudinaryUploadWidgetResults, CloudinaryUploadWidgetInfo } from "next-cloudinary";
-import Image from "next/image";
+// import Image from "next/image"; <-- On supprime cette ligne
 import { motion, AnimatePresence } from "framer-motion";
 import { ProjectStatus } from "@prisma/client";
 
-// --- C'EST ICI LA CORRECTION PRINCIPALE ---
 interface ProjectFormModalProps {
     isOpen: boolean;
     onClose: () => void;
-    // On ajoute cette ligne pour que TypeScript accepte la prop 'projectToEdit'
     projectToEdit?: ProjectWithImages | null;
 }
 
@@ -44,21 +42,17 @@ export default function ProjectFormModal({ isOpen, onClose, projectToEdit }: Pro
     // --- LOGIQUE DE REMPLISSAGE POUR L'ÉDITION ---
     useEffect(() => {
         if (projectToEdit) {
-            // Si on édite, on remplit le formulaire avec les données existantes
             setFormData({
                 title: projectToEdit.title,
                 slug: projectToEdit.slug,
                 description: projectToEdit.description,
                 status: projectToEdit.status,
-                // Formatage des dates pour les inputs HTML (YYYY-MM-DD)
                 startDate: projectToEdit.startDate ? new Date(projectToEdit.startDate).toISOString().split('T')[0] : '',
                 endDate: projectToEdit.endDate ? new Date(projectToEdit.endDate).toISOString().split('T')[0] : '',
-                // Extraction des URLs des images existantes
                 images: projectToEdit.images.map(img => img.url)
             });
             setIsSlugEdited(true);
         } else {
-            // Sinon (mode création), on remet à zéro
             setFormData(initialFormState);
             setIsSlugEdited(false);
         }
@@ -69,7 +63,6 @@ export default function ProjectFormModal({ isOpen, onClose, projectToEdit }: Pro
         if (mutationStatus === 'succeeded') {
             onClose();
             dispatch(resetMutationStatus());
-            // Si c'était une création, on reset le form
             if (!projectToEdit) setFormData(initialFormState);
         }
     }, [mutationStatus, onClose, dispatch, projectToEdit]);
@@ -104,7 +97,6 @@ export default function ProjectFormModal({ isOpen, onClose, projectToEdit }: Pro
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Transformation des données pour l'API
         const projectData = {
             title: formData.title,
             slug: formData.slug,
@@ -112,7 +104,6 @@ export default function ProjectFormModal({ isOpen, onClose, projectToEdit }: Pro
             status: formData.status as ProjectStatus,
             startDate: formData.startDate ? new Date(formData.startDate).toISOString() : null,
             endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
-            // Conversion du tableau de string en tableau d'objets pour Prisma
             images: formData.images.map(url => ({ url, altText: formData.title }))
         };
 
@@ -196,7 +187,12 @@ export default function ProjectFormModal({ isOpen, onClose, projectToEdit }: Pro
                                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
                                         {formData.images.map((img, index) => (
                                             <div key={index} className="relative aspect-square rounded-lg overflow-hidden group border border-slate-200">
-                                                <Image src={img} alt="Aperçu" fill className="object-cover" />
+                                                {/* MODIFICATION ICI : On utilise img au lieu de Image */}
+                                                <img 
+                                                    src={img} 
+                                                    alt="Aperçu" 
+                                                    className="w-full h-full object-cover" 
+                                                />
                                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                                     <button type="button" onClick={() => removeImage(index)} className="p-1.5 bg-white text-red-600 rounded-full hover:bg-red-50 transition-colors">
                                                         <Trash2 size={16} />

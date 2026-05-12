@@ -74,7 +74,7 @@ export default function ContactSection() {
     } catch (error) {
       setStatus({
         loading: false,
-        error: "Une erreur est survenue. Veuillez réessayer.",
+        error: "Une erreur est survenue. Veuillez réessayer." + error,
         success: "",
       });
     }
@@ -184,6 +184,7 @@ export default function ContactSection() {
                     required
                     placeholder="Votre adresse mail"
                     className="w-full px-5 py-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                    suppressHydrationWarning={true}
                   />
                 </div>
               </div>

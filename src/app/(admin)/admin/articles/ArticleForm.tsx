@@ -16,7 +16,8 @@ import {
   CloudinaryUploadWidgetResults,
   CloudinaryUploadWidgetInfo
 } from "next-cloudinary";
-import Image from "next/image";
+// import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 import { Save, Upload, X } from "lucide-react";
 import Link from "next/link";
 
@@ -34,21 +35,23 @@ const slugify = (text: string) =>
 interface ArticleFormProps {
   initialData?: Article;
   categories: Category[];
+  onClose?: () => void;
 }
 
 export default function ArticleForm({
   initialData,
   categories,
+  onClose
 }: ArticleFormProps) {
   const [formData, setFormData] = useState<createArticleSchema>({
-    title: initialData?.title || "",
-    slug: initialData?.slug || "",
-    excerpt: initialData?.excerpt || "",
-    content: initialData?.content || "",
-    image: initialData?.image || "",
-    readTime: initialData?.readTime || "",
-    published: initialData?.published || false,
-    categoryId: initialData?.categoryId || "",
+    title: "",
+    slug: "",
+    excerpt: "",
+    content: "",
+    image: "",
+    readTime: "",
+    published: false,
+    categoryId: "",
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string[] | undefined }>({});
@@ -62,10 +65,29 @@ export default function ArticleForm({
   );
 
   useEffect(() => {
+    if (initialData) {
+      setFormData({
+        title: initialData.title,
+        slug: initialData.slug,
+        excerpt: initialData.excerpt || "",
+        content: initialData.content,
+        image: initialData.image || "",
+        readTime: initialData.readTime || "",
+        published: initialData.published,
+        categoryId: initialData.categoryId || "",
+      });
+    }
+  }, [initialData]);
+
+  useEffect(() => {
     if (mutationStatus === "succeeded") {
       dispatch(resetMutationStatus());
-      router.push("/admin/articles");
       router.refresh();
+      if (onClose) {
+        onClose();
+      } else {
+        router.push("/admin/articles");
+      }
     }
     if (mutationStatus === "failed" && mutationError && "errors" in mutationError) {
       setErrors(mutationError.errors.fieldErrors);
@@ -211,11 +233,11 @@ export default function ArticleForm({
                 </CldUploadWidget>
               ) : (
                 <div className="relative h-48 w-full rounded-xl overflow-hidden group border border-slate-200">
-                  <Image
+                  {/* Utilisation de img pour éviter les erreurs de configuration Next/Image avec les URLs externes */}
+                  <img
                     src={formData.image}
                     alt="Cover"
-                    fill
-                    className="object-cover"
+                    className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <button
@@ -342,12 +364,22 @@ export default function ArticleForm({
         </div>
 
         <div className="flex items-center gap-3">
-          <Link
-            href="/admin/articles"
-            className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-200 rounded-lg transition-colors"
-          >
-            Annuler
-          </Link>
+          {onClose ? (
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-200 rounded-lg transition-colors"
+            >
+              Annuler
+            </button>
+          ) : (
+            <Link
+              href="/admin/articles"
+              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-200 rounded-lg transition-colors"
+            >
+              Annuler
+            </Link>
+          )}
           <button
             type="submit"
             disabled={mutationStatus === "loading" || isUploadingImage}

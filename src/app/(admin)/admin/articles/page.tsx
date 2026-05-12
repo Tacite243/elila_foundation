@@ -15,18 +15,24 @@ interface SerializableArticle extends Omit<Article, "createdAt" | "updatedAt"> {
 export default async function ArticlesPage() {
   let serializableArticles: SerializableArticle[] = [];
   let error: string | null = null;
+  let categories: Category[] = [];
 
   try {
-    // 1. Tentative de chargement des données
-    const articlesFromDb = await prisma.article.findMany({
-      include: {
-        category: true,
-        author: { select: { name: true, id: true } },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    // 1. Tentative de chargement des données (Articles ET Catégories en parallèle pour la performance)
+    const [articlesFromDb, categoriesFromDb] = await Promise.all([
+      prisma.article.findMany({
+        include: {
+          category: true,
+          author: { select: { name: true, id: true } },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+      prisma.category.findMany({ // NOUVEAU : Récupération des catégories
+        orderBy: { name: "asc" }
+      })
+    ]);
 
     // 2. Sérialisation des données
     serializableArticles = articlesFromDb.map((article) => ({
@@ -34,6 +40,9 @@ export default async function ArticlesPage() {
       createdAt: article.createdAt.toISOString(),
       updatedAt: article.updatedAt.toISOString(),
     }));
+
+    categories = categoriesFromDb; // NOUVEAU : Assignation des catégories
+
   } catch (e) {
     console.error("Erreur de connexion BDD:", e);
     // On capture l'erreur pour l'afficher proprement sans crasher la page
@@ -82,7 +91,10 @@ export default async function ArticlesPage() {
             // Affichage du gestionnaire d'articles si tout va bien
             <div className="p-6">
               {/* On passe les données au composant client */}
-              <ArticleManager initialArticles={serializableArticles} />
+              <ArticleManager
+                initialArticles={serializableArticles}
+                categories={categories}
+              />
             </div>
           )}
         </div>
