@@ -16,7 +16,8 @@ import {
   CloudinaryUploadWidgetResults,
   CloudinaryUploadWidgetInfo
 } from "next-cloudinary";
-import Image from "next/image";
+// import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 import { Save, Upload, X } from "lucide-react";
 import Link from "next/link";
 
@@ -211,7 +212,7 @@ export default function ArticleForm({
                 </CldUploadWidget>
               ) : (
                 <div className="relative h-48 w-full rounded-xl overflow-hidden group border border-slate-200">
-                  <Image
+                  <CldImage
                     src={formData.image}
                     alt="Cover"
                     fill
