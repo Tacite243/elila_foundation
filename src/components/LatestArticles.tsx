@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Tag, BookOpen, Loader2 } from "lucide-react";
+import { ArrowRight, Tag, BookOpen } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Imports Redux (liaison avec votre store et votre slice)
@@ -50,13 +50,60 @@ export default function LatestArticles() {
     }
   };
 
-  // 3. Écran de chargement (Spinner lucide-react)
+  // 3. Écran de chargement par SQUELETTE (Skeleton)
   if (publicStatus === "loading") {
     return (
       <section className="py-20 sm:py-28 bg-background transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center min-h-[350px]">
-          <Loader2 className="animate-spin h-10 w-10 text-secondary mb-4" />
-          <p className="text-foreground/75 font-medium">Récupération des articles culturels...</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* En-tête de section factice */}
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 animate-pulse">
+            <div className="space-y-4 w-full max-w-xl">
+              <div className="h-10 bg-foreground/10 rounded-lg w-1/2"></div>
+              <div className="h-5 bg-foreground/10 rounded-lg w-3/4"></div>
+            </div>
+            <div className="hidden md:block h-6 bg-foreground/10 rounded-full w-36"></div>
+          </div>
+
+          {/* Grille de cartes squelettes réactives (1 sur mobile, 2 sur tablette, 3 sur desktop) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((index) => (
+              <div
+                key={index}
+                className="flex flex-col bg-card rounded-2xl overflow-hidden border border-border shadow-sm animate-pulse"
+              >
+                {/* Emplacement de l'image */}
+                <div className="h-56 bg-foreground/10 w-full relative">
+                  {/* Badge de catégorie factice */}
+                  <div className="absolute top-4 left-4 h-6 bg-foreground/20 rounded-full w-20"></div>
+                </div>
+
+                {/* Emplacement du texte */}
+                <div className="flex flex-col flex-grow p-6 space-y-4">
+                  {/* Date et Icone */}
+                  <div className="h-4 bg-foreground/10 rounded-md w-1/3"></div>
+                  
+                  {/* Titre (sur deux lignes) */}
+                  <div className="space-y-2">
+                    <div className="h-5 bg-foreground/15 rounded-md w-11/12"></div>
+                    <div className="h-5 bg-foreground/15 rounded-md w-2/3"></div>
+                  </div>
+
+                  {/* Extrait (sur trois lignes) */}
+                  <div className="space-y-2 pt-2">
+                    <div className="h-3 bg-foreground/10 rounded-md w-full"></div>
+                    <div className="h-3 bg-foreground/10 rounded-md w-full"></div>
+                    <div className="h-3 bg-foreground/10 rounded-md w-4/5"></div>
+                  </div>
+
+                  {/* Lien de pied de page */}
+                  <div className="pt-4 mt-auto">
+                    <div className="h-4 bg-foreground/20 rounded-md w-24"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     );
