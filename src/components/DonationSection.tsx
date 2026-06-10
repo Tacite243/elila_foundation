@@ -3,7 +3,6 @@
 import React from "react";
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
-// Le composant Image de Next.js n'est pas idéal pour l'effet bg-fixed, nous utilisons donc un style en ligne.
 
 // --- Données de la Section ---
 const ctaData = {
@@ -11,7 +10,7 @@ const ctaData = {
   description: 'Croyez-vous en nous et en notre potentiel ? Soutenez notre fondation en faisant un don simplement.',
   buttonText: 'Faire un don',
   buttonLink: '#contact',
-  backgroundImage: '/images/PXL_20230520_141431103.jpg', // Assurez-vous que le chemin est correct dans /public
+  backgroundImage: '/images/PXL_20230520_141431103.jpg',
 };
 
 // --- Animations ---
@@ -30,18 +29,15 @@ const fadeInUp: Variants = {
 
 export default function DonationSection() {
   return (
-    // LA CORRECTION PRINCIPALE EST ICI :
-    // On applique l'image en tant que background CSS directement sur la section
-    // et on utilise les classes Tailwind pour l'effet de parallaxe.
     <section
       style={{ backgroundImage: `url(${ctaData.backgroundImage})` }}
       id="call-to-action"
       className="relative py-28 sm:py-36 bg-cover bg-center bg-no-repeat bg-fixed"
     >
-      {/* Le voile de couleur est maintenant un simple div qui couvre la section */}
-      <div className="absolute inset-0 bg-primary/70 dark:bg-primary/80" />
+      {/* Voile aux couleurs de la marque (Bleu Marine primaire) pour la cohérence visuelle */}
+      <div className="absolute inset-0 bg-primary/75 dark:bg-primary/85" />
 
-      {/* Le contenu reste le même, mais il est maintenant positionné par-dessus le fond */}
+      {/* Contenu positionné par-dessus le fond */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
           variants={containerVariants}
@@ -50,18 +46,20 @@ export default function DonationSection() {
           viewport={{ once: true, amount: 0.5 }}
           className="flex flex-col items-center"
         >
+          {/* Titre : Utilise de façon fixe le blanc ivoire de la marque pour un contraste maximal */}
           <motion.h2
             variants={fadeInUp}
             transition={{ duration: 0.7, ease: "easeInOut" }}
-            className="text-4xl md:text-5xl font-bold text-primary-foreground leading-tight"
+            className="text-4xl md:text-5xl font-bold text-[#FAF9F6] leading-tight drop-shadow-md"
           >
             {ctaData.title}
           </motion.h2>
 
+          {/* Description : Blanc ivoire adouci */}
           <motion.p
             variants={fadeInUp}
             transition={{ duration: 0.7, ease: "easeInOut" }}
-            className="mt-4 max-w-2xl text-lg text-primary-foreground/90"
+            className="mt-4 max-w-2xl text-lg text-[#FAF9F6]/85 font-medium drop-shadow-sm"
           >
             {ctaData.description}
           </motion.p>
@@ -75,9 +73,10 @@ export default function DonationSection() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 rounded-full font-semibold text-base transition-all duration-300
-                           border-2 border-accent text-accent 
-                           hover:bg-accent hover:text-accent-foreground shadow-lg"
+                // Bouton contour (hollow) Or/Champagne qui se remplit au survol avec le Bleu Marine en couleur de texte
+                className="px-8 py-3 rounded-full font-bold text-base transition-all duration-300
+                           border-2 border-[#C5A265] text-[#C5A265] 
+                           hover:bg-[#C5A265] hover:text-[#1E2749] hover:shadow-[0_0_20px_rgba(197,162,101,0.4)] shadow-lg"
               >
                 {ctaData.buttonText}
               </motion.button>

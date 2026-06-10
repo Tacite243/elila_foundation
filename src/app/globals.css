@@ -1,64 +1,53 @@
 @import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-:root {
-  /* Thème clair (par défaut) */
-  --background: #ffffff; /* Fond blanc */
-  --foreground: #171717; /* Texte noir */
-  
-  /* Couleurs de votre marque */
-  --primary: #2A3A5E; /* Bleu marine du logo */
-  --primary-foreground: #F0F0F0; /* Gris clair/Blanc pour le texte sur le fond primaire */
-  --accent: #D1D5DB; /* Gris argenté du logo */
-  --accent-foreground: #171717; /* Texte noir pour le texte sur le fond accent */
-}
+/* 1. Force Tailwind v4 à appliquer les classes 'dark:' lorsqu'un parent possède la classe '.dark' */
+@variant dark (&:where(.dark, .dark *));
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Thème sombre */
-    --background: #0a0a0a; /* Fond noir */
-    --foreground: #ededed; /* Texte blanc cassé */
-    
-    /* Couleurs de votre marque pour le thème sombre */
-    --primary: #2A3A5E; /* Le bleu marine reste le même */
-    --primary-foreground: #F0F0F0; /* Le texte sur le fond primaire reste le même */
-    --accent: #4B5563; /* Un gris plus foncé pour l'accentuation en mode sombre */
-    --accent-foreground: #F0F0F0; /* Texte clair sur le fond accent en mode sombre */
-  }
-}
-
-@theme inline {
+/* 2. Enregistrement des couleurs et composants dans le thème Tailwind v4 */
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
   --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-border: var(--border);
 }
 
-
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-        "Helvetica Neue", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+/* 3. Définition des variables de base */
+@layer base {
+  :root {
+    /* Arrière-plan et Texte Principal */
+    --background: #FAF9F6;  /* Blanc ivoire doux, haut de gamme */
+    --foreground: #111524;  /* Bleu-noir très sombre pour une lecture confortable */
     
-    /* Application des couleurs de base */
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    /* Couleurs de Marque */
+    --primary: #1E2749;     /* Le bleu marine profond de votre logo */
+    --secondary: #C5A265;   /* Doré/Champagne mat pour les accents et boutons */
+    --accent: #5C6B80;      /* Bleu ardoise moyen pour les éléments secondaires */
+    
+    /* Éléments d'interface (Cartes, Bordures) */
+    --card: #FFFFFF;        /* Blanc pur pour faire ressortir les cartes du fond ivoire */
+    --border: #E2E8F0;      /* Gris clair pour les séparateurs discrets */
+  }
 
-    overflow-x: hidden; 
-    width: 100%;
-    position: relative;
-}
+  .dark {
+    /* Arrière-plan et Texte Principal */
+    --background: #0B0E17;  /* Bleu nuit très profond, plus riche que du noir pur */
+    --foreground: #E2E8F0;  /* Blanc doux bleuté pour éviter l'éblouissement */
+    
+    /* Couleurs de Marque */
+    --primary: #324075;     /* Bleu marine légèrement éclairci pour conserver du contraste */
+    --secondary: #D9C29A;   /* Doré un peu plus lumineux pour ressortir sur le sombre */
+    --accent: #475569;      /* Ardoise sombre */
+    
+    /* Éléments d'interface (Cartes, Bordures) */
+    --card: #131826;        /* Bleu nuit légèrement plus clair pour détacher les cartes */
+    --border: #1E293B;      /* Bordure sombre et subtile */
+  }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+    font-family: 'Inter', sans-serif;
+  }
 }

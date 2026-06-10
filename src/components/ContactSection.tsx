@@ -14,7 +14,7 @@ const contactDetails = [
   },
   {
     Icon: Phone,
-    title: "Appellez-nous",
+    title: "Appelez-nous",
     line1: "+243 990 868 155",
   },
   {
@@ -59,7 +59,6 @@ export default function ContactSection() {
     setStatus({ loading: true, error: "", success: "" });
 
     try {
-      // Simulation d'envoi
       await new Promise((resolve) => setTimeout(resolve, 1500));
       setStatus({
         loading: false,
@@ -68,7 +67,6 @@ export default function ContactSection() {
       });
       setFormData({ name: "", email: "", message: "" });
 
-      // Reset du message de succès après 5 secondes
       setTimeout(() => setStatus(prev => ({ ...prev, success: '' })), 5000);
 
     } catch (error) {
@@ -81,8 +79,7 @@ export default function ContactSection() {
   };
 
   return (
-    // CORRECTION ICI : Ajout de 'overflow-hidden' pour empêcher le débordement horizontal sur mobile
-    <section id="contact" className="py-20 sm:py-28 bg-gray-50 dark:bg-gray-800 overflow-hidden">
+    <section id="contact" className="py-20 sm:py-28 bg-background overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Titre de la section */}
@@ -94,7 +91,7 @@ export default function ContactSection() {
           viewport={{ once: true }}
         >
           <div className="inline-block relative">
-            <h2 className="text-3xl sm:text-4xl font-bold text-primary dark:text-primary-foreground tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold text-primary dark:text-secondary tracking-tight">
               Nous Contacter
             </h2>
             <motion.div
@@ -109,7 +106,7 @@ export default function ContactSection() {
               viewport={{ once: true }}
             />
           </div>
-          <p className="mt-8 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="mt-8 text-lg text-foreground/70 max-w-2xl mx-auto font-medium">
             Laissez un message pour plus d&apos;informations ou pour nous signaler
             votre don.
           </p>
@@ -129,18 +126,18 @@ export default function ContactSection() {
           >
             {contactDetails.map((item, index) => (
               <div key={index} className="flex items-start group">
-                <div className="flex-shrink-0 h-14 w-14 bg-primary text-primary-foreground rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 duration-300 shadow-md">
+                <div className="flex-shrink-0 h-14 w-14 bg-primary text-background rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 duration-300 shadow-md">
                   <item.Icon className="h-6 w-6" />
                 </div>
                 <div className="ml-5">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-xl font-bold text-foreground">
                     {item.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+                  <p className="text-foreground/80 mt-1 leading-relaxed">
                     {item.line1}
                   </p>
                   {item.line2 && (
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                    <p className="text-foreground/80 leading-relaxed">
                       {item.line2}
                     </p>
                   )}
@@ -151,7 +148,7 @@ export default function ContactSection() {
 
           {/* Colonne du formulaire */}
           <motion.div
-            className="lg:col-span-2 bg-white dark:bg-gray-900 p-8 md:p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700"
+            className="lg:col-span-2 bg-card p-8 md:p-10 rounded-3xl shadow-xl border border-border"
             variants={slideInFromRight}
             initial="initial"
             whileInView="whileInView"
@@ -170,7 +167,7 @@ export default function ContactSection() {
                     onChange={handleInputChange}
                     required
                     placeholder="Votre nom"
-                    className="w-full px-5 py-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                    className="w-full px-5 py-4 rounded-xl bg-background border border-border text-foreground placeholder-foreground/40 focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all"
                   />
                 </div>
                 <div className="relative">
@@ -183,7 +180,7 @@ export default function ContactSection() {
                     onChange={handleInputChange}
                     required
                     placeholder="Votre adresse mail"
-                    className="w-full px-5 py-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                    className="w-full px-5 py-4 rounded-xl bg-background border border-border text-foreground placeholder-foreground/40 focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all"
                     suppressHydrationWarning={true}
                   />
                 </div>
@@ -198,7 +195,7 @@ export default function ContactSection() {
                   required
                   rows={6}
                   placeholder="Votre message..."
-                  className="w-full px-5 py-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none transition-all"
+                  className="w-full px-5 py-4 rounded-xl bg-background border border-border text-foreground placeholder-foreground/40 focus:ring-2 focus:ring-secondary focus:border-transparent outline-none resize-none transition-all"
                 ></textarea>
               </div>
 
@@ -206,7 +203,7 @@ export default function ContactSection() {
                 <button
                   type="submit"
                   disabled={status.loading}
-                  className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full font-bold text-white bg-primary hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg shadow-primary/25 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full font-bold text-[#1E2749] bg-secondary hover:bg-secondary/90 hover:scale-105 transition-all duration-300 shadow-lg shadow-secondary/20 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
                   {status.loading ? (
                     <>

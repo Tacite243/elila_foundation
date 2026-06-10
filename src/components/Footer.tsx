@@ -42,10 +42,10 @@ const contactInfo = [
 ];
 
 const socialLinks = [
-  { name: "Facebook", icon: Facebook, href: "#", color: "hover:text-blue-600" },
-  { name: "Twitter", icon: Twitter, href: "#", color: "hover:text-sky-500" },
-  { name: "Instagram", icon: Instagram, href: "#", color: "hover:text-pink-500" },
-  { name: "LinkedIn", icon: Linkedin, href: "#", color: "hover:text-blue-700" },
+  { name: "Facebook", icon: Facebook, href: "#", color: "hover:text-[#1E2749]" },
+  { name: "Twitter", icon: Twitter, href: "#", color: "hover:text-[#1E2749]" },
+  { name: "Instagram", icon: Instagram, href: "#", color: "hover:text-[#1E2749]" },
+  { name: "LinkedIn", icon: Linkedin, href: "#", color: "hover:text-[#1E2749]" },
 ];
 
 const fadeInUp = {
@@ -72,9 +72,9 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-primary text-primary-foreground pt-16 pb-8 relative overflow-hidden">
-        {/* Élément décoratif d'arrière-plan */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <footer className="bg-[#1E2749] dark:bg-[#0B0E17] text-[#FAF9F6] pt-16 pb-8 relative overflow-hidden transition-colors duration-300">
+        {/* Élément décoratif d'arrière-plan en Or très discret */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#C5A265]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 text-center lg:text-left">
@@ -98,23 +98,24 @@ export default function Footer() {
                   <h3 className="text-2xl font-bold leading-none tracking-tight">
                     Elila Foundation
                   </h3>
-                  <span className="text-sm text-primary-foreground/70 font-medium mt-1">
+                  <span className="text-sm text-[#FAF9F6]/70 font-medium mt-1">
                     Goma, RDC
                   </span>
                 </div>
               </Link>
 
-              <p className="text-primary-foreground/70 text-sm leading-relaxed mb-6 max-w-sm mx-auto lg:mx-0">
+              <p className="text-[#FAF9F6]/70 text-sm leading-relaxed mb-6 max-w-sm mx-auto lg:mx-0">
                 Espace où les legs de la diaspora et du pays se rencontrent pour
                 habiliter la jeunesse de la région des Grands Lacs.
               </p>
 
+              {/* Réseaux Sociaux : ronds or/champagne au survol */}
               <div className="flex justify-center lg:justify-start space-x-3">
                 {socialLinks.map((social, index) => (
                   <Link
                     key={index}
                     href={social.href}
-                    className={`w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center transition-all duration-300 hover:bg-white hover:scale-110 ${social.color}`}
+                    className={`w-10 h-10 rounded-full bg-[#FAF9F6]/10 flex items-center justify-center transition-all duration-300 hover:bg-[#C5A265] hover:scale-110 ${social.color}`}
                     title={social.name}
                   >
                     <social.icon size={18} />
@@ -129,19 +130,18 @@ export default function Footer() {
               transition={{ delay: 0.1 }}
               className="lg:col-span-1 flex flex-col items-center lg:items-start"
             >
-              <h4 className="text-lg font-bold mb-6 text-accent relative inline-block">
+              <h4 className="text-lg font-bold mb-6 text-[#C5A265] relative inline-block">
                 Navigation
-                {/* Petit soulignement décoratif centré sur mobile */}
-                <span className="block h-1 w-10 bg-accent/30 rounded mt-1 mx-auto lg:mx-0"></span>
+                <span className="block h-1 w-10 bg-[#C5A265]/30 rounded mt-1 mx-auto lg:mx-0"></span>
               </h4>
               <ul className="space-y-3 w-full max-w-xs">
                 {quickLinks.map((link, index) => (
                   <li key={index} className="flex justify-center lg:justify-start">
                     <Link
                       href={link.path}
-                      className="text-primary-foreground/70 hover:text-accent hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group w-full justify-center lg:justify-start"
+                      className="text-[#FAF9F6]/70 hover:text-[#C5A265] hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group w-full justify-center lg:justify-start"
                     >
-                      <span className="h-1.5 w-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors"></span>
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#C5A265]/50 group-hover:bg-[#C5A265] transition-colors"></span>
                       {link.name}
                     </Link>
                   </li>
@@ -155,26 +155,26 @@ export default function Footer() {
               transition={{ delay: 0.2 }}
               className="lg:col-span-2 flex flex-col items-center lg:items-start"
             >
-              <h4 className="text-lg font-bold mb-6 text-accent relative inline-block">
+              <h4 className="text-lg font-bold mb-6 text-[#C5A265] relative inline-block">
                 Contactez-nous
-                <span className="block h-1 w-10 bg-accent/30 rounded mt-1 mx-auto lg:mx-0"></span>
+                <span className="block h-1 w-10 bg-[#C5A265]/30 rounded mt-1 mx-auto lg:mx-0"></span>
               </h4>
               <div className="grid sm:grid-cols-2 gap-6 w-full max-w-2xl">
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex flex-col sm:flex-row items-center sm:items-start gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors">
-                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-[#C5A265]/10 flex items-center justify-center text-[#C5A265] shrink-0">
                       <info.icon size={20} />
                     </div>
                     <div className="text-center sm:text-left">
                       {info.href ? (
                         <a
                           href={info.href}
-                          className="text-primary-foreground/90 hover:text-white transition-colors block font-medium"
+                          className="text-[#FAF9F6]/90 hover:text-[#C5A265] transition-colors block font-medium"
                         >
                           {info.text}
                         </a>
                       ) : (
-                        <span className="text-primary-foreground/90 block font-medium">
+                        <span className="text-[#FAF9F6]/90 block font-medium">
                           {info.text}
                         </span>
                       )}
@@ -186,12 +186,12 @@ export default function Footer() {
           </div>
 
           {/* Footer Bottom */}
-          <div className="border-t border-primary-foreground/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-primary-foreground/60 text-center md:text-left pb-20 md:pb-0">
+          <div className="border-t border-[#FAF9F6]/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[#FAF9F6]/60 text-center md:text-left pb-20 md:pb-0">
             <p className="flex flex-col sm:flex-row items-center gap-1">
               <span>© {new Date().getFullYear()} Elila Foundation.</span>
               <button
                 onClick={handleOpenLogin}
-                className="hover:text-accent cursor-pointer focus:outline-none transition-colors"
+                className="hover:text-[#C5A265] cursor-pointer focus:outline-none transition-colors"
               >
                 Tous droits réservés.
               </button>
@@ -212,7 +212,6 @@ export default function Footer() {
         </div>
       </footer>
 
-      {/* Appel du composant Modal séparé */}
       <AnimatePresence>
         {isLoginOpen && <LoginModal onClose={() => setLoginOpen(false)} />}
       </AnimatePresence>
