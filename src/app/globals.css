@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
+/* 1. Force Tailwind v4 à appliquer les classes 'dark:' lorsqu'un parent possède la classe '.dark' */
+@variant dark (&:where(.dark, .dark *));
+
+/* 2. Enregistrement des couleurs et composants dans le thème Tailwind v4 */
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-card: var(--card);
+  --color-border: var(--border);
+}
+
+/* 3. Définition des variables de base */
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #171717;
-    --primary: #2A3A5E;
-    --accent: #D1D5DB;
+    /* Arrière-plan et Texte Principal */
+    --background: #FAF9F6;  /* Blanc ivoire doux, haut de gamme */
+    --foreground: #111524;  /* Bleu-noir très sombre pour une lecture confortable */
+    
+    /* Couleurs de Marque */
+    --primary: #1E2749;     /* Le bleu marine profond de votre logo */
+    --secondary: #C5A265;   /* Doré/Champagne mat pour les accents et boutons */
+    --accent: #5C6B80;      /* Bleu ardoise moyen pour les éléments secondaires */
+    
+    /* Éléments d'interface (Cartes, Bordures) */
+    --card: #FFFFFF;        /* Blanc pur pour faire ressortir les cartes du fond ivoire */
+    --border: #E2E8F0;      /* Gris clair pour les séparateurs discrets */
   }
 
   .dark {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --primary: #2A3A5E;
-    --accent: #4B5563;
+    /* Arrière-plan et Texte Principal */
+    --background: #0B0E17;  /* Bleu nuit très profond, plus riche que du noir pur */
+    --foreground: #E2E8F0;  /* Blanc doux bleuté pour éviter l'éblouissement */
+    
+    /* Couleurs de Marque */
+    --primary: #324075;     /* Bleu marine légèrement éclairci pour conserver du contraste */
+    --secondary: #D9C29A;   /* Doré un peu plus lumineux pour ressortir sur le sombre */
+    --accent: #475569;      /* Ardoise sombre */
+    
+    /* Éléments d'interface (Cartes, Bordures) */
+    --card: #131826;        /* Bleu nuit légèrement plus clair pour détacher les cartes */
+    --border: #1E293B;      /* Bordure sombre et subtile */
   }
 
   body {
     @apply bg-background text-foreground transition-colors duration-300;
     font-family: 'Inter', sans-serif;
   }
-}
-
-body {
-    border: 10px solid red !important;
 }

@@ -19,10 +19,6 @@ const carouselImages = [
     src: "/images/PXL_20230520_141431103.jpg",
     alt: "Paysage de collines verdoyantes",
   },
-  // {
-  //   src: "/images/PXL_20230422_105903915.MP.jpg",
-  //   alt: "Projet de la fondation en cours",
-  // },
 ];
 
 // --- Définitions des Animations ---
@@ -75,12 +71,11 @@ export default function HeroSection() {
           />
         </motion.div>
       </AnimatePresence>
-      {/* SECTION 2: Voile noir pour la lisibilité */}
-      <div className="absolute inset-0 z-[-1] bg-black/40" />{" "}
-      {/* J'ai légèrement augmenté l'opacité pour un meilleur contraste */}
-      {/* 
-        SECTION 3: Contenu central avec les couleurs de la marque
-      */}
+
+      {/* SECTION 2: Voile noir pour la lisibilité (légèrement augmenté à 50% pour un contraste idéal) */}
+      <div className="absolute inset-0 z-[-1] bg-black/50" />
+
+      {/* SECTION 3: Contenu central */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={textContainerVariants}
@@ -88,38 +83,40 @@ export default function HeroSection() {
           animate="animate"
           className="flex flex-col items-center"
         >
+          {/* Titre : Utilise le blanc ivoire de la charte de manière fixe */}
           <motion.h1
             variants={fadeInUp}
-            // Utilise la couleur --primary-foreground (le blanc cassé du logo)
-            className="text-4xl sm:text-6xl lg:text-8xl font-bold text-primary-foreground leading-tight"
+            className="text-4xl sm:text-6xl lg:text-8xl font-bold text-[#FAF9F6] leading-tight drop-shadow-md"
           >
             Elila Foundation
           </motion.h1>
 
+          {/* Sous-titre : Blanc ivoire avec 85% d'opacité pour hiérarchiser l'information visuelle */}
           <motion.p
             variants={fadeInUp}
-            // Le même blanc cassé, mais avec une légère transparence pour hiérarchiser l'information
-            className="mt-6 max-w-3xl text-lg md:text-xl text-primary-foreground/90"
+            className="mt-6 max-w-3xl text-lg md:text-xl text-[#FAF9F6]/85 font-medium drop-shadow-sm"
           >
             Une plateforme dédiée à la rencontre des Legas du pays et de la diaspora
           </motion.p>
 
+          {/* Bouton d'action principal (CTA) */}
           <motion.div variants={fadeInUp} className="mt-12">
-            {/* <Link href="/identification"> */}
             <motion.button
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsModalOpen(true)}
-              // Le bouton utilise la couleur --accent (gris argenté) et le texte --accent-foreground (noir)
-              className="px-8 py-3 rounded-full font-semibold text-base transition-all duration-300
-                           bg-accent text-accent-foreground shadow-lg hover:shadow-xl"
+              // bg-[#C5A265] = Or/Champagne de la marque
+              // text-[#1E2749] = Bleu Marine profond du logo
+              // Ajout d'une ombre dorée subtile au survol (hover)
+              className="px-8 py-4 rounded-full font-bold text-base transition-all duration-300
+                         bg-[#C5A265] text-[#1E2749] shadow-lg hover:shadow-[0_0_20px_rgba(197,162,101,0.5)]"
             >
               Identifiez-vous ici
             </motion.button>
-            {/* </Link> */}
           </motion.div>
         </motion.div>
       </div>
+
       <IdentificationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

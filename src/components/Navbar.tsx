@@ -15,13 +15,24 @@ interface NavItem {
   anchor?: string;
 }
 
+// Configuration des liens de navigation (déclarée à l'extérieur pour optimiser les performances)
+const navItems: NavItem[] = [
+  { path: "/", anchor: "#hero", label: "Accueil", icon: Home },
+  { path: "/", anchor: "#about", label: "À Propos", icon: Info },
+  { path: "/", anchor: "#call-to-action", label: "Soutenir", icon: Heart },
+  { path: "/", anchor: "#programmes", label: "Programmes", icon: ClipboardList },
+  { path: "/", anchor: "#cards", label: "Culture", icon: Palette },
+  { path: "/", anchor: "#team", label: "Team", icon: Users },
+  { path: "/", anchor: "#contact", label: "Contact", icon: Mail },
+];
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeHash, setActiveHash] = useState("");
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  // La logique est simplifiée : le header est opaque s'il est "scrollé" OU si on n'est pas sur la page d'accueil.
   const isOpaque = scrolled || !isHome;
 
   useEffect(() => {
@@ -30,15 +41,39 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems: NavItem[] = [
-    { path: "/", anchor: "#hero", label: "Accueil", icon: Home },
-    { path: "/", anchor: "#about", label: "À Propos", icon: Info },
-    { path: "/", anchor: "#call-to-action", label: "Soutenir", icon: Heart },
-    { path: "/", anchor: "#programmes", label: "Programmes", icon: ClipboardList },
-    { path: "/", anchor: "#cards", label: "Culture", icon: Palette },
-    { path: "/", anchor: "#team", label: "Team", icon: Users },
-    { path: "/", anchor: "#contact", label: "Contact", icon: Mail },
-  ];
+  // Détection automatique de la section visible à l'écran (Scroll Spy)
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveHash(window.location.hash || "#hero");
+    };
+    
+    const handleSectionDetection = () => {
+      if (!isHome) return;
+      const sections = navItems
+        .map(item => item.anchor ? document.querySelector(item.anchor) : null)
+        .filter((el): el is HTMLElement => el !== null);
+      
+      const scrollPosition = window.scrollY + 160; // Offset pour une détection fluide
+      
+      for (const section of sections) {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        if (scrollPosition >= top && scrollPosition < top + height) {
+          setActiveHash(`#${section.id}`);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleSectionDetection);
+    window.addEventListener("hashchange", handleHashChange);
+    handleHashChange(); // Détection initiale au chargement
+    
+    return () => {
+      window.removeEventListener("scroll", handleSectionDetection);
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [isHome]);
 
   const getHref = (item: NavItem) => {
     return isHome ? (item.anchor || item.path) : (item.anchor ? `${item.path}${item.anchor}` : item.path);
@@ -48,16 +83,18 @@ export default function Header() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      // Le fond est maintenant dynamique et utilise les variables de thème
-      className={`fixed w-full z-50 transition-all duration-300 ${isOpaque
-          ? "bg-background/80 dark:bg-background/90 backdrop-blur-lg shadow-md border-b border-slate-200/80 dark:border-slate-800/80"
+      // Remplacement des classes pour utiliser les variables de fond et de bordure de votre charte
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        isOpaque
+          ? "bg-background/85 backdrop-blur-lg shadow-sm border-b border-border/80"
           : "bg-transparent"
-        }`}
+      }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 lg:h-24">
 
-          <motion.div whileHover={{ scale: 1.02 }} className="flex-shrink-0">
+          {/* SECTION LOGO & TITRE */}
+          <motion.div whileHover={{ scale: 1.01 }} className="flex-shrink-0">
             <Link href="/" className="flex items-center gap-3 sm:gap-4">
               <div className="relative h-12 w-12 sm:h-14 sm:w-14">
                 <Image src="/ELILA FOUNDATION BLUE.png" alt="Logo" fill className="object-contain" priority />
@@ -65,15 +102,17 @@ export default function Header() {
 
               <div className="flex flex-col justify-center">
                 <h1
-                  // La couleur du texte change en fonction du thème (foreground) ou reste blanche sur fond transparent
-                  className={`font-bold leading-none tracking-tight transition-colors text-lg sm:text-xl ${isOpaque ? "text-foreground" : "text-white"
-                    }`}
+                  // Utilise le Bleu Marine de votre logo en mode clair quand on scrolle, et le blanc ivoire en mode sombre/transparent
+                  className={`font-bold leading-none tracking-tight transition-colors text-lg sm:text-xl ${
+                    isOpaque ? "text-primary dark:text-foreground" : "text-white"
+                  }`}
                 >
                   Elila Foundation
                 </h1>
                 <p
-                  className={`text-xs font-medium mt-1 transition-colors ${isOpaque ? "text-slate-500" : "text-slate-200"
-                    }`}
+                  className={`text-[10px] sm:text-xs font-semibold uppercase tracking-wider mt-1 transition-colors ${
+                    isOpaque ? "text-foreground/50" : "text-white/70"
+                  }`}
                 >
                   RDC – Goma
                 </p>
@@ -81,26 +120,27 @@ export default function Header() {
             </Link>
           </motion.div>
 
-          {/* NAVIGATION DESKTOP (SIMPLIFIÉE) */}
+          {/* NAVIGATION DESKTOP */}
           <div className="hidden lg:flex items-center space-x-1">
             {navItems.map((item) => {
               const href = getHref(item);
-              // Simplification de la logique 'isActive' (un jour)
-              const isActive = false;
+              const isActive = isHome && activeHash === item.anchor;
 
               return (
                 <Link key={item.label} href={href}>
                   <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    // Les styles actifs utilisent la couleur primaire de votre marque !
-                    // Les styles inactifs sont dynamiques (light/dark)
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                        ? "bg-primary text-primary-foreground shadow-lg" // Votre couleur de marque
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    // Refonte visuelle complète de l'onglet actif et de l'effet de survol (hover)
+                    className={`px-4 py-2 rounded-full text-xs xl:text-sm font-semibold transition-all duration-200 ${
+                      isActive
+                        ? isOpaque
+                          ? "bg-primary/10 text-primary dark:bg-secondary/10 dark:text-secondary font-bold"
+                          : "bg-white/15 text-white font-bold"
                         : isOpaque
-                          ? "text-foreground/80 hover:bg-accent hover:text-accent-foreground"
-                          : "text-white hover:bg-white/10"
-                      }`}
+                          ? "text-foreground/75 hover:text-primary dark:hover:text-secondary hover:bg-foreground/5"
+                          : "text-white/80 hover:text-white hover:bg-white/10"
+                    }`}
                   >
                     {item.label}
                   </motion.div>
@@ -112,44 +152,45 @@ export default function Header() {
             </div>
           </div>
 
-          {/* BURGER BUTTON */}
+          {/* BURGER BUTTON (MOBILE) */}
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(!isOpen)}
-            className={`lg:hidden p-2 rounded-lg focus:outline-none ${isOpaque ? "text-foreground" : "text-white"
-              }`}
+            className={`lg:hidden p-2 rounded-lg focus:outline-none transition-colors ${
+              isOpaque ? "text-foreground hover:bg-foreground/5" : "text-white hover:bg-white/10"
+            }`}
           >
-            {isOpen ? <X size={32} /> : <Menu size={32} />}
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
           </motion.button>
         </div>
       </div>
 
-      {/* MOBILE MENU (MAINTENANT COMPATIBLE DARK MODE) */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            // Le menu mobile utilise maintenant `bg-background`
-            className="lg:hidden bg-background/95 dark:bg-background/98 backdrop-blur-lg border-t border-slate-200/50 dark:border-slate-800/50 shadow-xl overflow-hidden"
+            className="lg:hidden bg-background/95 backdrop-blur-lg border-t border-border/50 shadow-xl overflow-hidden"
           >
-            <div className="px-4 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
+            <div className="px-4 py-6 space-y-2 max-h-[80vh] overflow-y-auto">
               {navItems.map((item) => {
                 const href = getHref(item);
                 const Icon = item.icon;
-                const isActive = false;
+                const isActive = isHome && activeHash === item.anchor;
 
                 return (
                   <Link key={item.label} href={href}>
                     <motion.div
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setIsOpen(false)}
-                      // Les couleurs sont maintenant gérées par le thème
-                      className={`flex items-center space-x-4 px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${isActive
-                          ? "bg-primary/10 text-primary font-bold" // Version subtile de votre marque pour le mobile
-                          : "text-foreground/80 hover:bg-accent hover:text-accent-foreground"
-                        }`}
+                      // Cohérence des couleurs actives/inactives adaptées à l'écran mobile
+                      className={`flex items-center space-x-4 px-4 py-3 rounded-xl text-base font-semibold transition-all duration-200 ${
+                        isActive
+                          ? "bg-primary/10 text-primary dark:bg-secondary/10 dark:text-secondary font-bold"
+                          : "text-foreground/80 hover:bg-foreground/5"
+                      }`}
                     >
                       {Icon && <Icon size={20} />}
                       <span>{item.label}</span>
@@ -158,7 +199,7 @@ export default function Header() {
                 );
               })}
 
-              <div className="pt-6 mt-4 border-t border-slate-200 dark:border-slate-800 flex justify-center">
+              <div className="pt-6 mt-4 border-t border-border/50 flex justify-center">
                 <ThemeSwitcher isOpaque={true} />
               </div>
             </div>

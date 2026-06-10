@@ -23,6 +23,7 @@ const nextConfig = {
         pathname: `/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/**`,
       },
     ],
+    qualities: [25, 50, 75, 90, 100],
   },
 };
 
