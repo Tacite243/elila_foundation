@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Search,
   Calendar,
@@ -12,109 +13,46 @@ import {
   ChevronRight,
   Filter,
   ArrowUpDown,
+  BookOpen,
 } from "lucide-react";
 
-// --- 1. VOS DONNÉES ---
-const rawData = {
-  articles: {
-    education: {
-      title: "L’Initiation (Lutende) chez le Peuple Lega",
-      underTitle: "Un Rite de Passage Sacré",
-      description:
-        "Le Lutende n’est pas simplement un événement, mais un processus sacré et éducatif. Il symbolise l’intégration de l’individu dans la société adulte, avec ses droits et ses devoirs. Ce rite vise à former des citoyens respectueux des traditions.",
-      content: { section: "...", section1: "..." },
-      imgSource: "/images/initiation.jpeg",
-    },
-    spiritualite: {
-      title: "La Spiritualité chez le Peuple Lega",
-      underTitle: "Les Racines du Sacré",
-      description:
-        "Découvrez la spiritualité ancestrale des Léga, où la nature et le divin se rencontrent. Une exploration des croyances qui fondent notre identité et notre rapport au monde.",
-      content: { section: "...", section1: "..." },
-      imgSource: "/images/cta-bg.jpg",
-    },
-    mariage: {
-      title: "Le Mariage Coutumier",
-      underTitle: "Alliance et Tradition",
-      description:
-        "Le mariage chez les Lega dépasse l'union de deux êtres : c'est l'alliance de deux familles et la pérennisation des valeurs claniques à travers des rituels précis.",
-      content: {},
-      imgSource: "/images/nuptiae.jpg",
-    },
-    art: {
-      title: "L'Art et les Masques Lega",
-      underTitle: "Expression Culturelle",
-      description:
-        "Les masques Lega ne sont pas de simples objets décoratifs. Ils sont les vecteurs d'enseignements philosophiques et moraux transmis au sein du Bwami.",
-      content: {},
-      imgSource:
-        "/images/primary_Android_media_com.whatsapp.w4b_WhatsApp Business_Media_.Statuses_e181cde98a0c418b8a665f79293db56e.jpg",
-    },
-    territoire: {
-      title: "Nos Terres Ancestrales",
-      underTitle: "Géographie et Histoire",
-      description:
-        "Voyage au cœur de Mwenga, Shabunda et Pangi. Comprendre le lien viscéral qui unit le peuple Lega à ses forêts et ses montagnes.",
-      content: {},
-      imgSource: "/images/nature.jpg",
-    },
-  },
-};
-
-// --- 2. TRANSFORMATION DES DONNÉES ---
-
-// Fonction pour grouper les articles par grandes catégories pour le filtre
-const getCategory = (key: string) => {
-  switch (key) {
-    case "education":
-    case "spiritualite":
-      return "Culture";
-    case "mariage":
-      return "Société";
-    case "art":
-      return "Art";
-    case "territoire":
-      return "Histoire";
-    default:
-      return "Divers";
-  }
-};
-
-const articlesList = Object.entries(rawData.articles).map(
-  ([key, value], index) => {
-    // Simulation de dates décroissantes pour le tri
-    const fakeDate = new Date();
-    fakeDate.setDate(fakeDate.getDate() - index * 5);
-
-    return {
-      id: key,
-      slug: key,
-      title: value.title,
-      category: getCategory(key), // Catégorie générique (Culture, Art...)
-      subtitle: value.underTitle, // Sous-titre spécifique
-      excerpt: value.description,
-      image: value.imgSource,
-      date: fakeDate.toISOString().split("T")[0],
-    };
-  }
-);
+// Imports Redux
+import { AppDispatch, RootState } from "@/redux/store";
+import { fetchPublicArticles } from "@/redux/slices/articlesSlice";
 
 const ITEMS_PER_PAGE = 6;
 
-// --- 3. COMPOSANT PAGE ---
 export default function NewsPage() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  // 1. Récupération des articles réels depuis votre Store Redux
+  const { publicItems: articles, publicStatus } = useSelector(
+    (state: RootState) => state.articles
+  );
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tous");
   const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const categories = [
-    "Tous",
-    ...Array.from(new Set(articlesList.map((a) => a.category))),
-  ];
+  // 2. Récupération des données au chargement
+  useEffect(() => {
+    if (publicStatus === "idle") {
+      dispatch(fetchPublicArticles());
+    }
+  }, [dispatch, publicStatus]);
 
+  // Génération dynamique des filtres de catégories basés sur les données réelles
+  const categories = useMemo(() => {
+    const list = articles
+      .map((a) => a.category?.name)
+      .filter((name): name is string => !!name);
+    return ["Tous", ...Array.from(new Set(list))];
+  }, [articles]);
+
+  // 3. Filtrage et Tri en mémoire (optimisé avec useMemo)
   const filteredArticles = useMemo(() => {
-    let result = [...articlesList];
+    let result = [...articles];
 
     if (searchTerm) {
       const lowerTerm = searchTerm.toLowerCase();
@@ -127,18 +65,18 @@ export default function NewsPage() {
 
     if (selectedCategory !== "Tous") {
       result = result.filter(
-        (article) => article.category === selectedCategory
+        (article) => article.category?.name === selectedCategory
       );
     }
 
     result.sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
       return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
     });
 
     return result;
-  }, [searchTerm, selectedCategory, sortOrder]);
+  }, [articles, searchTerm, selectedCategory, sortOrder]);
 
   const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE);
   const currentArticles = filteredArticles.slice(
@@ -151,16 +89,17 @@ export default function NewsPage() {
   }, [searchTerm, selectedCategory, sortOrder]);
 
   return (
-    <section className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-32 pb-20">
+    <section className="min-h-screen bg-background transition-colors duration-300 pt-32 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* EN-TÊTE */}
+        
+        {/* EN-TÊTE DE LA PAGE */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
           <div className="inline-block relative">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary dark:text-primary-foreground tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-primary dark:text-secondary tracking-tight">
               Actualités & Ressources
             </h1>
             <motion.div
@@ -174,43 +113,43 @@ export default function NewsPage() {
               transition={{ delay: 0.3, duration: 0.8 }}
             />
           </div>
-          <p className="mt-6 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="mt-6 text-lg text-foreground/75 max-w-2xl mx-auto font-medium">
             Restez informé des dernières actions de la Fondation Elila,
             découvrez nos articles culturels et suivez nos projets sur le
             terrain.
           </p>
         </motion.div>
 
-        {/* BARRE D'OUTILS */}
+        {/* BARRE D'OUTILS (Recherche, Filtres et Tri) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-12 border border-gray-100 dark:border-gray-700 sticky top-24 z-30"
+          className="bg-card rounded-2xl shadow-lg p-6 mb-12 border border-border sticky top-24 z-30"
         >
           <div className="flex flex-col lg:flex-row gap-6 justify-between items-center">
-            {/* Recherche */}
+            {/* Zone de recherche */}
             <div className="relative w-full lg:w-1/3">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/45 h-5 w-5" />
               <input
                 type="text"
-                placeholder="Rechercher..."
+                placeholder="Rechercher un article..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder-foreground/40 focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all"
               />
             </div>
 
-            {/* Catégories (Scrollbar cachée) */}
+            {/* Catégories (barre de défilement horizontal propre) */}
             <div className="flex gap-2 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto scrollbar-hide">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
                     selectedCategory === cat
-                      ? "bg-primary text-primary-foreground shadow-md"
-                      : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      ? "bg-primary text-[#FAF9F6] dark:bg-secondary dark:text-[#1E2749] shadow-md"
+                      : "bg-background text-foreground/70 border border-border hover:bg-foreground/5"
                   }`}
                 >
                   {cat}
@@ -218,19 +157,19 @@ export default function NewsPage() {
               ))}
             </div>
 
-            {/* Tri */}
+            {/* Tri par ordre chronologique */}
             <div className="flex items-center gap-2 min-w-max">
-              <span className="text-sm text-gray-500 dark:text-gray-400 hidden sm:inline">
-                Trier :
+              <span className="text-sm text-foreground/60 hidden sm:inline font-medium">
+                Trier par :
               </span>
               <button
                 onClick={() =>
                   setSortOrder(sortOrder === "asc" ? "desc" : "asc")
                 }
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:border-primary hover:text-primary transition-all"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-background text-foreground/80 hover:border-primary dark:hover:border-secondary transition-all font-semibold"
               >
                 <ArrowUpDown size={16} />
-                <span className="text-sm font-medium">
+                <span className="text-sm">
                   {sortOrder === "desc" ? "Récent" : "Ancien"}
                 </span>
               </button>
@@ -238,68 +177,98 @@ export default function NewsPage() {
           </div>
         </motion.div>
 
-        {/* GRILLE D'ARTICLES */}
-        {currentArticles.length > 0 ? (
+        {/* --- ÉTAT DE CHARGEMENT PAR SQUELETTE (Skeleton Loading) --- */}
+        {publicStatus === "loading" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3, 4, 5, 6].map((index) => (
+              <div
+                key={index}
+                className="flex flex-col bg-card rounded-2xl overflow-hidden border border-border shadow-sm animate-pulse"
+              >
+                <div className="h-56 bg-foreground/10 w-full relative">
+                  <div className="absolute top-4 left-4 h-6 bg-foreground/20 rounded-full w-20"></div>
+                </div>
+                <div className="flex flex-col flex-grow p-6 space-y-4">
+                  <div className="h-4 bg-foreground/10 rounded-md w-1/3"></div>
+                  <div className="space-y-2">
+                    <div className="h-5 bg-foreground/15 rounded-md w-11/12"></div>
+                    <div className="h-5 bg-foreground/15 rounded-md w-2/3"></div>
+                  </div>
+                  <div className="space-y-2 pt-2">
+                    <div className="h-3 bg-foreground/10 rounded-md w-full"></div>
+                    <div className="h-3 bg-foreground/10 rounded-md w-4/5"></div>
+                  </div>
+                  <div className="pt-4 mt-auto">
+                    <div className="h-4 bg-foreground/20 rounded-md w-24"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : currentArticles.length > 0 ? (
+          /* --- RENDU DE LA GRILLE D'ARTICLES RÉELS --- */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatePresence mode="popLayout">
               {currentArticles.map((article) => (
                 <motion.article
                   key={article.id}
                   layout
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
-                  className="group flex flex-col bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 h-full"
+                  className="group flex flex-col bg-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-border h-full"
                 >
+                  {/* Image & Badge de catégorie */}
                   <Link
                     href={`/news/${article.slug}`}
                     className="relative h-56 w-full overflow-hidden block"
                   >
                     <Image
-                      src={article.image}
+                      src={article.image || "/images/placeholder.jpg"}
                       alt={article.title}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="absolute top-4 left-4 bg-primary/90 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm shadow-sm">
+                    <div className="absolute top-4 left-4 bg-primary/95 text-[#FAF9F6] text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm shadow-sm">
                       <Tag size={12} />
                       <span className="truncate max-w-[150px]">
-                        {article.category}
+                        {article.category?.name || "Culture"}
                       </span>
                     </div>
                   </Link>
 
+                  {/* Corps de l'article */}
                   <div className="flex flex-col flex-grow p-6">
-                    <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-3">
-                      <div className="flex items-center">
-                        <Calendar size={14} className="mr-2 text-accent" />
-                        {new Date(article.date).toLocaleDateString("fr-FR", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </div>
+                    <div className="flex items-center text-sm text-[#C5A265] mb-3 font-semibold">
+                      <Calendar size={14} className="mr-2" />
+                      {new Date(article.createdAt).toLocaleDateString("fr-FR", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
                     </div>
 
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary dark:group-hover:text-secondary transition-colors">
                       <Link href={`/news/${article.slug}`}>
                         {article.title}
                       </Link>
                     </h3>
 
-                    {/* Affichage du sous-titre */}
-                    <p className="text-sm text-primary font-medium mb-2">
-                      {article.subtitle}
-                    </p>
+                    {/* Affichage dynamique du temps de lecture de l'article */}
+                    {article.readTime && (
+                      <p className="text-xs text-primary dark:text-secondary font-bold uppercase tracking-wider mb-3">
+                        {article.readTime} de lecture
+                      </p>
+                    )}
 
-                    <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-6 flex-grow">
+                    <p className="text-foreground/75 text-sm line-clamp-3 mb-6 flex-grow leading-relaxed">
                       {article.excerpt}
                     </p>
 
                     <Link
                       href={`/news/${article.slug}`}
-                      className="inline-flex items-center text-primary font-semibold text-sm hover:text-accent transition-colors mt-auto"
+                      className="inline-flex items-center text-primary dark:text-secondary font-bold text-sm transition-colors mt-auto"
                     >
                       Lire l&apos;article
                       <ChevronRight
@@ -313,37 +282,38 @@ export default function NewsPage() {
             </AnimatePresence>
           </div>
         ) : (
+          /* --- RENDU SI AUCUN RÉSULTAT DE RECHERCHE --- */
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-20 bg-white dark:bg-gray-800 rounded-3xl"
+            className="text-center py-20 bg-card rounded-3xl border border-border"
           >
-            <Filter className="h-16 w-16 mx-auto text-gray-300 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <Filter className="h-16 w-16 mx-auto text-foreground/20 mb-4" />
+            <h3 className="text-xl font-bold text-foreground">
               Aucun résultat
             </h3>
-            <p className="text-gray-500 mt-2">
-              Aucun article ne correspond à vos critères.
+            <p className="text-foreground/60 mt-2 font-medium">
+              Aucun article ne correspond à vos critères de recherche.
             </p>
             <button
               onClick={() => {
                 setSearchTerm("");
                 setSelectedCategory("Tous");
               }}
-              className="mt-6 px-6 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+              className="mt-6 px-6 py-2.5 bg-primary text-[#FAF9F6] dark:bg-secondary dark:text-[#1E2749] font-bold rounded-full hover:scale-105 transition-all duration-300"
             >
-              Réinitialiser
+              Réinitialiser les filtres
             </button>
           </motion.div>
         )}
 
-        {/* PAGINATION */}
+        {/* COMPOSANT DE PAGINATION */}
         {totalPages > 1 && (
           <div className="mt-16 flex justify-center items-center gap-4">
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="p-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 rounded-full border border-border text-foreground/80 hover:bg-foreground/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft size={20} />
             </button>
@@ -354,10 +324,10 @@ export default function NewsPage() {
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`w-10 h-10 rounded-full font-medium transition-all ${
+                    className={`w-10 h-10 rounded-full font-bold transition-all duration-200 ${
                       currentPage === page
-                        ? "bg-primary text-primary-foreground shadow-md scale-110"
-                        : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                        ? "bg-primary text-[#FAF9F6] dark:bg-secondary dark:text-[#1E2749] shadow-md scale-110"
+                        : "bg-card text-foreground/80 border border-border hover:bg-foreground/5"
                     }`}
                   >
                     {page}
@@ -369,7 +339,7 @@ export default function NewsPage() {
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="p-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 rounded-full border border-border text-foreground/80 hover:bg-foreground/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronRight size={20} />
             </button>
@@ -377,6 +347,7 @@ export default function NewsPage() {
         )}
       </div>
 
+      {/* Raccords CSS natifs pour masquer la scrollbar de Swiper ou de la liste horizontale */}
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
