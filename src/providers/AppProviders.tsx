@@ -5,7 +5,8 @@ import { makeStore, AppStore } from "@/redux/store";
 import { SessionProvider } from "next-auth/react";
 import React, { useRef } from "react";
 import StoreInitializer from "@/redux/storeInitializer";
-import { ThemeApplier } from "./ThemeApplier";
+// import { ThemeApplier } from "../components/ThemeApplier";
+import { ThemeProvider } from "next-themes";
 
 
 // Ce composant va "envelopper" notre application pour lui donner accès
@@ -24,8 +25,9 @@ export default function AppProviders({
         <SessionProvider>
             <Provider store={storeRef.current}>
                 <StoreInitializer />
-                <ThemeApplier />
-                {children}
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                    {children}
+                </ThemeProvider>
             </Provider>
         </SessionProvider>
     );
